@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 参考書 -->
+  <path d="M90 96 L116 92 L130 98 L130 130 L116 124 L90 128 Z" fill="#1D9E75"/>
+  <path d="M116 92 L116 124" stroke="#0f6b4e" stroke-width="2"/>
+  <path d="M93 100 L113 97 M93 106 L113 103 M93 112 L113 109" stroke="#bfe8da" stroke-width="1.6"/>
+  <path d="M119 97 L128 101 M119 103 L128 107 M119 109 L128 113" stroke="#d6f0e6" stroke-width="1.4"/>
+  <rect x="120" y="92" width="5" height="14" fill="#BA7517"/>
+</svg>

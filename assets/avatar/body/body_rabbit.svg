@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- うさぎ（笑顔） -->
+  <ellipse cx="48" cy="32" rx="8.5" ry="26" fill="#fbfbfb" transform="rotate(-22 48 32)"/>
+  <ellipse cx="92" cy="32" rx="8.5" ry="26" fill="#fbfbfb" transform="rotate(22 92 32)"/>
+  <ellipse cx="48" cy="34" rx="4.2" ry="18" fill="#f5b8c6" transform="rotate(-22 48 34)"/>
+  <ellipse cx="92" cy="34" rx="4.2" ry="18" fill="#f5b8c6" transform="rotate(22 92 34)"/>
+  <ellipse cx="70" cy="80" rx="42" ry="42" fill="#fbfbfb"/>
+  <circle cx="55" cy="60" r="5" fill="#5a4a55"/><circle cx="53.5" cy="58.2" r="1.6" fill="#fff"/><circle cx="56.6" cy="61.4" r="0.9" fill="#fff" opacity=".8"/><circle cx="85" cy="60" r="5" fill="#5a4a55"/><circle cx="83.5" cy="58.2" r="1.6" fill="#fff"/><circle cx="86.6" cy="61.4" r="0.9" fill="#fff" opacity=".8"/>
+  <ellipse cx="43" cy="76" rx="6" ry="3.6" fill="#fcc4d2" opacity="0.8"/><ellipse cx="97" cy="76" rx="6" ry="3.6" fill="#fcc4d2" opacity="0.8"/>
+  <path d="M70 86 l-4 3.5 h8 Z" fill="#e58aa0"/>
+  <path d="M70 89.5 V93" stroke="#d99aa9" stroke-width="2" stroke-linecap="round"/>
+  <path d="M61 93 Q70 102 79 93" stroke="#d99aa9" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- ノーベル冠（SR） -->
+  <ellipse cx="70" cy="40" rx="40" ry="10" fill="#f4d97a" opacity=".25"/>
+  <path d="M70 8 L78 22 L94 18 L86 32 L102 36 L86 42 L70 40 L54 42 L38 36 L54 32 L46 18 L62 22 Z" fill="#f3c63d"/>
+  <g fill="#2f7d5b">
+    <ellipse cx="42" cy="44" rx="6" ry="3" transform="rotate(-30 42 44)"/>
+    <ellipse cx="50" cy="48" rx="6" ry="3" transform="rotate(-15 50 48)"/>
+    <ellipse cx="98" cy="44" rx="6" ry="3" transform="rotate(30 98 44)"/>
+    <ellipse cx="90" cy="48" rx="6" ry="3" transform="rotate(15 90 48)"/>
+  </g>
+  <circle cx="70" cy="20" r="4" fill="#fff7d6"/>
+  <g fill="#fff7d6"><path d="M70 2 l1.5 5 -1.5 -1 -1.5 1 Z"/><path d="M58 6 l1 4 -1 -1 -1 1 Z"/><path d="M82 6 l1 4 -1 -1 -1 1 Z"/></g>
+</svg>

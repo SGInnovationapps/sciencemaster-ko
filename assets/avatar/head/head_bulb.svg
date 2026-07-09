@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- ひらめき電球 -->
+  <g stroke="#f0c419" stroke-width="2.5" stroke-linecap="round">
+    <path d="M70 4 V12 M52 10 L57 16 M88 10 L83 16 M44 26 L51 28 M96 26 L89 28"/>
+  </g>
+  <path d="M70 14 Q86 14 86 30 Q86 40 78 44 L62 44 Q54 40 54 30 Q54 14 70 14 Z" fill="#ffe27a"/>
+  <path d="M70 14 Q60 16 58 30" stroke="#fff" stroke-width="2.5" fill="none" opacity=".7" stroke-linecap="round"/>
+  <rect x="62" y="44" width="16" height="5" fill="#bbb"/>
+  <rect x="63" y="49" width="14" height="3" fill="#999"/>
+</svg>

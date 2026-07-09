@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>理科基礎マスター</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1D9E75">
+<meta name="description" content="高校「化学基礎」「生物基礎」の四択クイズで毎日コツコツ学習。">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="理科基礎">
+
+<style>
+  :root{
+    --bg:#F4F2EC; --surface:#FFFFFF; --ink:#23241F; --muted:#6E6F66; --hint:#9A9B90;
+    --line:rgba(35,36,31,.12); --line2:rgba(35,36,31,.22);
+    --green:#1D9E75; --green-d:#0F6E56; --green-dd:#04342C; --green-l:#E1F5EE; --green-m:#5DCAA5;
+    --blue:#185FA5; --blue-d:#11487E; --blue-dd:#042C53; --blue-l:#E6F1FB; --blue-m:#7FB0DE;
+    --pink:#993556; --pink-d:#4B1528; --pink-l:#FBEAF0; --pink-m:#ED93B1;
+    --amber:#BA7517; --amber-d:#633806; --amber-dd:#412402; --amber-l:#FAEEDA; --amber-m:#FAC775;
+    --red:#E24B4A; --red-d:#A32D2D; --red-dd:#501313; --red-l:#FCEBEB;
+    --radius:14px; --radius-sm:10px;
+    --shadow:0 1px 2px rgba(35,36,31,.04);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  body{display:flex;justify-content:center;}
+  #app{width:100%;max-width:440px;min-height:100vh;background:var(--bg);position:relative;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  .screen{display:none;animation:fade .28s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  @keyframes pop{0%{transform:scale(.85);opacity:0;}60%{transform:scale(1.04);}100%{transform:scale(1);opacity:1;}}
+  @keyframes barfill{from{width:0;}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .topbar h1{font-size:18px;font-weight:600;margin:0;letter-spacing:.01em;}
+  .sub{font-size:13px;color:var(--muted);margin:0;}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--blue-l);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;}
+
+  .streak{background:var(--amber-l);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;
+    display:flex;align-items:center;gap:14px;}
+  .streak .flame{width:48px;height:48px;border-radius:50%;background:var(--amber-m);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:26px;}
+  .streak-label{font-size:13px;color:var(--amber);margin:0;}
+  .streak-num{font-size:22px;font-weight:600;color:var(--amber-dd);margin:0;line-height:1.2;}
+  .streak-num small{font-size:14px;font-weight:600;}
+  .streak-next{text-align:right;}
+  .streak-next p{margin:0;font-size:12px;color:var(--amber);}
+  .streak-next b{font-size:14px;color:var(--amber-d);font-weight:600;}
+  .dots{display:flex;gap:4px;margin-bottom:16px;padding:0 2px;}
+  .dots span{flex:1;height:6px;border-radius:3px;background:var(--line);}
+  .dots span.on{background:var(--amber-m);}
+
+  /* subject tabs */
+  .subjtabs{display:flex;gap:8px;background:var(--surface);border:.5px solid var(--line);
+    border-radius:var(--radius);padding:5px;margin-bottom:4px;box-shadow:var(--shadow);}
+  .subjtab{flex:1;border-radius:10px;padding:10px 8px;font-size:14px;font-weight:600;
+    color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;
+    transition:background .15s,color .15s;}
+  .subjtab i{font-size:17px;}
+  .subjtab.chem.active{background:var(--blue);color:#fff;box-shadow:0 1px 3px rgba(24,95,165,.35);}
+  .subjtab.bio.active{background:var(--green);color:#fff;box-shadow:0 1px 3px rgba(29,158,117,.35);}
+
+  /* ===== 科目テーマ（画面全体で化学=青／生物=緑をはっきり） ===== */
+  #app{--subj:var(--blue); --subj-d:var(--blue-d); --subj-dd:var(--blue-dd);
+       --subj-l:var(--blue-l); --subj-m:var(--blue-m);}
+  #app[data-subject="生物基礎"]{--subj:var(--green); --subj-d:var(--green-d); --subj-dd:var(--green-dd);
+       --subj-l:var(--green-l); --subj-m:var(--green-m);}
+  /* 画面上部の科目カラーバンド */
+  #app::before{content:"";position:fixed;top:0;left:0;right:0;height:6px;background:var(--subj);
+    z-index:30;transition:background .25s;}
+  /* 背景をうっすら科目色に */
+  #app[data-subject]{background:var(--subj-l);}
+  /* 科目ラベル（ホーム上部に表示する帯） */
+  .subjbanner{display:flex;align-items:center;gap:8px;background:var(--subj);color:#fff;
+    border-radius:var(--radius);padding:10px 16px;margin-bottom:12px;font-weight:600;font-size:15px;
+    box-shadow:var(--shadow);transition:background .25s;}
+  .subjbanner i{font-size:20px;}
+  .subjbanner .sw{margin-left:auto;font-size:12px;font-weight:600;opacity:.9;}
+
+  .card{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);}
+  .statcard{display:flex;gap:14px;align-items:center;padding:16px;margin-bottom:12px;}
+  .ring{position:relative;width:96px;height:96px;flex-shrink:0;}
+  .ring .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ring .ctr .big{font-size:24px;font-weight:600;line-height:1;}
+  .ring .ctr .big small{font-size:13px;}
+  .ring .ctr .lab{font-size:11px;color:var(--muted);}
+  .statlist{flex:1;display:flex;flex-direction:column;gap:10px;}
+  .statlist .k{font-size:12px;color:var(--muted);margin:0;}
+  .statlist .v{font-size:18px;font-weight:600;margin:0;}
+  .statlist .v small{font-size:12px;color:var(--muted);font-weight:400;}
+
+  .section-h{font-size:13px;font-weight:600;color:var(--muted);margin:18px 2px 8px;}
+
+  .mode{border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;
+    display:flex;align-items:center;gap:12px;width:100%;text-align:left;transition:transform .1s;}
+  .mode:active{transform:scale(.985);}
+  .mode .ic{font-size:24px;flex-shrink:0;}
+  .mode .ttl{font-size:15px;font-weight:600;margin:0;}
+  .mode .dsc{font-size:12px;margin:0;}
+  .mode .chev{margin-left:auto;font-size:20px;}
+  .mode.quest{background:var(--green-l);} .mode.quest .ic,.mode.quest .chev{color:var(--green-d);}
+  .mode.quest .ttl{color:var(--green-dd);} .mode.quest .dsc{color:var(--green-d);}
+  .mode.rand{background:var(--blue-l);} .mode.rand .ic,.mode.rand .chev{color:var(--blue);}
+  .mode.rand .ttl{color:var(--blue-d);} .mode.rand .dsc{color:var(--blue);}
+  .mode.review{background:var(--pink-l);} .mode.review .ic{color:var(--pink);}
+  .mode.review .ttl{color:var(--pink-d);} .mode.review .dsc{color:var(--pink);}
+  .badge{background:var(--pink-m);color:var(--pink-d);font-size:12px;font-weight:600;
+    padding:2px 9px;border-radius:10px;margin-left:auto;}
+
+  .mastery{padding:14px 16px;}
+  .mrow{margin-bottom:14px;} .mrow:last-child{margin-bottom:0;}
+  .mrow .mtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+  .mrow .mname{font-size:13px;display:flex;align-items:center;gap:5px;}
+  .mrow .mname i{font-size:15px;}
+  .mrow .mpct{font-size:12px;color:var(--muted);}
+  .mbar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .mbar i{display:block;height:100%;border-radius:4px;animation:barfill .6s ease;}
+
+  /* quest category select */
+  .subject-h{font-size:14px;font-weight:600;margin:18px 2px 10px;display:flex;align-items:center;gap:7px;}
+  .subject-h.chem{color:var(--blue-d);} .subject-h.bio{color:var(--green-d);}
+  .catcard{border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;width:100%;text-align:left;
+    display:flex;align-items:center;gap:13px;transition:transform .1s;border:.5px solid transparent;}
+  .catcard:active{transform:scale(.985);}
+  .catcard.chem{background:var(--blue-l);} .catcard.bio{background:var(--green-l);}
+  .catcard .cic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    font-size:21px;flex-shrink:0;}
+  .catcard.chem .cic{background:var(--blue-m);color:var(--blue-dd);}
+  .catcard.bio .cic{background:var(--green-m);color:var(--green-dd);}
+  .catcard .cbody{flex:1;min-width:0;}
+  .catcard .cname{font-size:15px;font-weight:600;margin:0;}
+  .catcard.chem .cname{color:var(--blue-dd);} .catcard.bio .cname{color:var(--green-dd);}
+  .catcard .cmeta{font-size:12px;margin:3px 0 0;display:flex;align-items:center;gap:8px;}
+  .catcard.chem .cmeta{color:var(--blue-d);} .catcard.bio .cmeta{color:var(--green-d);}
+  .catcard .cprog{height:5px;border-radius:3px;margin-top:7px;overflow:hidden;background:rgba(35,36,31,.1);}
+  .catcard .cprog i{display:block;height:100%;border-radius:3px;}
+  .catcard.chem .cprog i{background:var(--blue);} .catcard.bio .cprog i{background:var(--green);}
+  .catcard .cchev{font-size:20px;flex-shrink:0;}
+  .catcard.chem .cchev{color:var(--blue-d);} .catcard.bio .cchev{color:var(--green-d);}
+  .catcard .clear-tag{font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;}
+
+  /* quest count select */
+  .cnt-summary{padding:14px 16px;margin-bottom:4px;display:flex;align-items:center;gap:12px;}
+  .cnt-summary .cic{width:42px;height:42px;border-radius:11px;background:var(--green-m);color:var(--green-dd);
+    display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .cnt-summary .cname{font-size:16px;font-weight:600;margin:0;}
+  .cnt-summary .cmeta{font-size:12px;color:var(--muted);margin:2px 0 0;}
+  .cntopt{width:100%;text-align:left;border-radius:var(--radius);padding:15px 16px;margin-bottom:10px;
+    background:var(--surface);border:.5px solid var(--line);box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:13px;transition:transform .1s,border-color .15s;}
+  .cntopt:active{transform:scale(.985);}
+  .cntopt .nic{width:40px;height:40px;border-radius:11px;background:var(--green-l);color:var(--green-d);
+    display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;flex-shrink:0;}
+  .cntopt .nbody{flex:1;min-width:0;}
+  .cntopt .nname{font-size:15px;font-weight:600;margin:0;}
+  .cntopt .ndsc{font-size:12px;color:var(--muted);margin:2px 0 0;}
+  .cntopt .nchev{font-size:20px;color:var(--green-d);flex-shrink:0;}
+  .cntopt[disabled]{opacity:.45;}
+
+  /* quiz */
+  .qhead{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .qhead .close{font-size:22px;color:var(--muted);background:none;}
+
+  /* フォント非依存のナビゲーションボタン */
+  .navbtn{display:inline-flex;align-items:center;gap:2px;font-size:15px;font-weight:600;
+    color:var(--muted);background:var(--surface);border:.5px solid var(--line);
+    border-radius:10px;padding:7px 12px;white-space:nowrap;}
+  .navbtn:active{transform:scale(.96);}
+  .navbtn .navarrow{font-size:20px;line-height:1;margin-top:-2px;}
+  .qclose{font-size:14px;font-weight:600;color:var(--muted);background:var(--surface);
+    border:.5px solid var(--line);border-radius:10px;padding:6px 12px;white-space:nowrap;}
+  .qclose:active{transform:scale(.96);}
+  .qprog{flex:1;height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .qprog i{display:block;height:100%;background:var(--green);border-radius:4px;transition:width .35s ease;}
+  .qcount{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;}
+  .qmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;background:var(--green-l);color:var(--green-d);}
+  .timer{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--muted);}
+  /* 難易度バッジ（基礎/標準/発展） */
+  .diffbadge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;
+    padding:3px 9px;border-radius:10px;white-space:nowrap;}
+  .diffbadge .st{letter-spacing:-1px;font-size:10px;}
+  .diff1{background:var(--green-l);color:var(--green-d);}
+  .diff2{background:var(--amber-l);color:var(--amber-d);}
+  .diff3{background:var(--red-l);color:var(--red-d);}
+  .qmeta .rightmeta{display:inline-flex;align-items:center;gap:8px;}
+
+  /* 到達度サマリー（受験生向け：科目ごとの仕上がり） */
+  .readiness{padding:14px 16px;margin-bottom:12px;}
+  .readiness .rhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+  .readiness .rttl{font-size:13px;font-weight:600;color:var(--subj-d);display:flex;align-items:center;gap:6px;}
+  .readiness .rttl i{font-size:16px;}
+  .readiness .rpct{font-size:22px;font-weight:700;color:var(--subj-dd);line-height:1;}
+  .readiness .rpct small{font-size:12px;font-weight:600;color:var(--muted);}
+  .rbar{height:9px;background:var(--line);border-radius:5px;overflow:hidden;}
+  .rbar i{display:block;height:100%;border-radius:5px;background:var(--subj);animation:barfill .6s ease;}
+  .rmeta{display:flex;gap:14px;margin-top:9px;}
+  .rmeta div{font-size:11px;color:var(--muted);}
+  .rmeta b{font-size:14px;font-weight:600;color:var(--ink);display:block;line-height:1.3;}
+  .rmeta b.warn{color:var(--red-d);}
+  .qtext{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius);
+    padding:18px 16px;margin-bottom:16px;font-size:16px;line-height:1.6;box-shadow:var(--shadow);}
+  .choices{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .choice{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius);
+    padding:13px 14px;display:flex;align-items:center;gap:12px;text-align:left;width:100%;
+    transition:transform .08s,border-color .15s;}
+  .choice:active{transform:scale(.99);}
+  .choice .key{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line2);
+    color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    font-size:13px;font-weight:600;}
+  .choice .txt{font-size:15px;}
+  .choice .tag{margin-left:auto;font-size:12px;font-weight:600;}
+  .choice.correct{background:var(--green-l);border:2px solid var(--green);}
+  .choice.correct .key{background:var(--green);border-color:var(--green);color:#fff;}
+  .choice.correct .txt{color:var(--green-dd);font-weight:600;}
+  .choice.correct .tag{color:var(--green-d);}
+  .choice.wrong{background:var(--red-l);border:2px solid var(--red);}
+  .choice.wrong .key{background:var(--red);border-color:var(--red);color:#fff;}
+  .choice.wrong .txt{color:var(--red-dd);font-weight:600;}
+  .choice.wrong .tag{color:var(--red-d);}
+  .choice.dim{opacity:.55;}
+  .choice[disabled]{cursor:default;}
+
+  .feedback{border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;animation:pop .3s ease;}
+  .feedback.ok{background:var(--green-l);}
+  .feedback.ng{background:var(--red-l);}
+  .feedback .fh{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .feedback .fh i{font-size:20px;}
+  .feedback .fh .ft{font-size:15px;font-weight:600;}
+  .feedback .fh .fp{margin-left:auto;font-size:12px;font-weight:600;}
+  .feedback p{font-size:13px;line-height:1.65;margin:0;}
+  .feedback.ok .fh i,.feedback.ok .fp{color:var(--green-d);} .feedback.ok .ft{color:var(--green-dd);} .feedback.ok p{color:var(--green-d);}
+  .feedback.ng .fh i{color:var(--red-d);} .feedback.ng .ft{color:var(--red-dd);} .feedback.ng p{color:var(--red-d);}
+  .reviewnote{background:var(--pink-l);border-radius:var(--radius);padding:11px 14px;margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;animation:pop .3s ease .05s both;}
+  .reviewnote i{font-size:19px;color:var(--pink);}
+  .reviewnote span{font-size:13px;color:var(--pink-d);}
+  .reviewnote b{font-weight:600;}
+
+  .btn{width:100%;border-radius:var(--radius);padding:14px;font-size:16px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;gap:6px;transition:transform .1s;}
+  .btn:active{transform:scale(.99);}
+  .btn.green{background:var(--green);color:#fff;}
+  .btn.dark{background:var(--ink);color:var(--bg);}
+  .btn.ghost{background:none;border:.5px solid var(--line2);color:var(--ink);}
+
+  /* result / clear */
+  .center{text-align:center;}
+  .medal{position:relative;width:120px;height:120px;margin:8px auto 4px;animation:pop .4s ease;}
+  .medal .ic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:46px;color:var(--green-dd);}
+  .stars{display:flex;justify-content:center;gap:6px;margin-bottom:14px;}
+  .stars i{color:var(--amber);}
+  .title-xl{font-size:24px;font-weight:600;margin:0 0 4px;}
+  .lead{font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 18px;}
+  .twocol{display:flex;gap:10px;margin-bottom:16px;}
+  .ministat{flex:1;background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius-sm);padding:12px;}
+  .ministat .k{font-size:12px;color:var(--muted);margin:0;}
+  .ministat .v{font-size:20px;font-weight:600;margin:2px 0 0;}
+  .ministat .v small{font-size:12px;color:var(--muted);font-weight:400;}
+  .recap{text-align:left;padding:14px 16px;margin-bottom:12px;}
+  .recap .k{font-size:12px;color:var(--muted);margin:0 0 4px;}
+  .recap .q{font-size:14px;line-height:1.5;margin:0;}
+
+  /* ===== アバター ===== */
+  .coinpill{display:inline-flex;align-items:center;gap:5px;background:var(--amber-l);
+    color:var(--amber-d);font-size:14px;font-weight:600;padding:5px 12px;border-radius:20px;}
+  .coinpill i{font-size:16px;color:var(--amber);}
+  .avstage{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 16px 16px;text-align:center;margin-bottom:14px;}
+  .avbg{font-size:12px;color:var(--hint);margin:0 0 6px;}
+  .avcompo{position:relative;width:140px;height:140px;margin:4px auto 0;user-select:none;}
+  /* 各レイヤーは140×140全面に重ねる。SVG内部で位置が決まっている前提 */
+  .avcompo .layer{position:absolute;inset:0;}
+  .avcompo .layer img{width:100%;height:100%;display:block;object-fit:contain;}
+  .avcompo .bg{z-index:0;}
+  .avcompo .bg img{opacity:.45;}
+  .avcompo .body{z-index:1;}
+  .avcompo .hand{z-index:2;}
+  .avcompo .pet{z-index:2;}
+  .avcompo .head{z-index:3;}
+  .avcompo .layer:empty{display:none;}
+  /* 絵文字フォールバック時のみ、旧来の位置で表示 */
+  .emoji-fallback{position:absolute;line-height:1;}
+  .bg  .emoji-fallback{left:50%;top:50%;transform:translate(-50%,-50%);font-size:120px;opacity:.18;}
+  .body .emoji-fallback{left:50%;top:54%;transform:translate(-50%,-50%);font-size:70px;}
+  .head .emoji-fallback{left:50%;top:14%;transform:translate(-50%,-50%);font-size:42px;}
+  .hand .emoji-fallback{right:6px;bottom:8px;font-size:38px;}
+  .pet  .emoji-fallback{left:6px;bottom:8px;font-size:34px;}
+  .avname{font-size:14px;color:var(--muted);margin:10px 0 0;}
+  .avname b{color:var(--ink);font-weight:600;}
+  .avname .lv{color:var(--blue);font-weight:600;margin-left:4px;}
+  .avxp{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px auto 0;max-width:200px;}
+  .avxp i{display:block;height:100%;background:var(--blue-m);border-radius:3px;}
+  .avxptxt{font-size:11px;color:var(--hint);margin:5px 0 0;}
+  .slottabs{display:flex;gap:6px;background:var(--surface);border:.5px solid var(--line);
+    border-radius:var(--radius);padding:5px;margin-bottom:12px;box-shadow:var(--shadow);}
+  .slottab{flex:1;border-radius:9px;padding:9px 4px;font-size:13px;font-weight:600;color:var(--muted);
+    transition:background .15s,color .15s;}
+  .slottab.active{background:var(--blue-l);color:var(--blue-d);}
+  .itemgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .itemcard{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius-sm);
+    padding:12px 8px 10px;text-align:center;box-shadow:var(--shadow);transition:transform .1s;}
+  .itemcard:active{transform:scale(.97);}
+  .itemcard.equipped{border:2px solid var(--blue);padding:11px 7px 9px;}
+  .itemcard.locked{opacity:.65;}
+  .iemoji{font-size:30px;line-height:1;}
+  .ithumb{width:46px;height:46px;object-fit:contain;display:block;margin:0 auto;}
+  .iname{font-size:13px;font-weight:600;margin:6px 0 0;color:var(--ink);}
+  .istat{font-size:12px;margin:4px 0 0;display:flex;align-items:center;justify-content:center;gap:3px;}
+  .istat i{font-size:13px;}
+  .istat.eq{color:var(--blue);} .istat.own{color:var(--muted);}
+  .istat.buy{color:var(--amber-d);} .istat.lock{color:var(--hint);}
+  .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);
+    color:#fff;font-size:13px;font-weight:600;padding:10px 18px;border-radius:22px;z-index:50;
+    box-shadow:0 4px 16px rgba(0,0,0,.18);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+
+  .hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ ONBOARDING (first run) ============ -->
+  <section id="onboard" class="screen center">
+    <div class="medal" style="margin-top:32px">
+      <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="ようこそ">
+        <circle cx="60" cy="60" r="52" fill="var(--blue-l)"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--blue)" stroke-width="3"/>
+        <circle cx="60" cy="60" r="40" fill="var(--blue-m)"/>
+      </svg>
+      <div class="ic" style="color:var(--blue-dd)"><i class="ti ti-flask"></i></div>
+    </div>
+    <p class="title-xl">理科基礎マスターへようこそ</p>
+    <p class="lead">共通テストの化学基礎・生物基礎を、毎日の積み重ねで得点源に。<br>まずはニックネームを教えてください。</p>
+    <input id="nameInput" type="text" maxlength="12" placeholder="ニックネーム（例：はると）"
+      style="width:100%;box-sizing:border-box;border:1px solid var(--line2);border-radius:var(--radius);
+      padding:14px 16px;font-size:16px;font-family:inherit;margin-bottom:8px;text-align:center;"
+      autocomplete="off">
+    <p id="nameHint" class="sub" style="min-height:18px;margin:0 0 14px;color:var(--red-d)"></p>
+    <button class="btn green" onclick="submitName()">はじめる <i class="ti ti-arrow-right"></i></button>
+    <p style="font-size:11px;color:var(--hint);line-height:1.6;margin:14px 4px 0;display:flex;align-items:center;justify-content:center;gap:5px;">
+      <i class="ti ti-lock" style="font-size:13px"></i>
+      <span>データはこの端末内にのみ保存され、外部へ共有されません。</span>
+    </p>
+  </section>
+
+  <!-- ============ HOME ============ -->
+  <section id="home" class="screen">
+    <div class="topbar">
+      <div>
+        <p class="sub">高校 化学基礎・生物基礎</p>
+        <h1>理科基礎マスター</h1>
+      </div>
+      <div class="avatar" id="userInitial" onclick="editName()" title="ニックネームを変更">J</div>
+    </div>
+
+    <div class="streak">
+      <div class="flame"><i class="ti ti-flame" style="color:var(--amber-d)"></i></div>
+      <div style="flex:1">
+        <p class="streak-label">連続ログイン</p>
+        <p class="streak-num"><span id="streakDays">7</span><small> 日連続</small></p>
+      </div>
+      <div class="streak-next">
+        <p>明日で</p><b>+50pt</b>
+      </div>
+    </div>
+    <div class="dots" id="streakDots"></div>
+
+    <div class="card statcard">
+      <div class="ring">
+        <svg viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="正答率">
+          <circle cx="48" cy="48" r="40" fill="none" stroke="var(--line)" stroke-width="9"/>
+          <circle id="ringArc" cx="48" cy="48" r="40" fill="none" stroke="var(--green)"
+            stroke-width="9" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="45.2"
+            transform="rotate(-90 48 48)"/>
+        </svg>
+        <div class="ctr">
+          <span class="big"><span id="accVal">82</span><small>%</small></span>
+          <span class="lab">正答率</span>
+        </div>
+      </div>
+      <div class="statlist">
+        <div><p class="k">累計チャレンジ</p><p class="v"><span id="totalCount">342</span> <small>問</small></p></div>
+        <div><p class="k">今日の挑戦</p><p class="v"><span id="todayCount">18</span> <small>問</small></p></div>
+      </div>
+    </div>
+
+    <div class="subjbanner" id="subjBanner">
+      <i class="ti ti-flask" id="subjBannerIcon"></i>
+      <span id="subjBannerName">化学基礎</span>
+      <span class="sw">タブで切り替え ↓</span>
+    </div>
+    <div class="subjtabs" id="subjTabs">
+      <button class="subjtab chem active" data-subj="化学基礎" onclick="setSubject('化学基礎')"><i class="ti ti-flask"></i>化学基礎</button>
+      <button class="subjtab bio" data-subj="生物基礎" onclick="setSubject('生物基礎')"><i class="ti ti-dna"></i>生物基礎</button>
+    </div>
+
+    <p class="section-h">今日の学習</p>
+    <div class="card readiness" id="readinessCard">
+      <div class="rhead">
+        <span class="rttl"><i class="ti ti-target-arrow"></i>入試仕上がり度（<span id="rdSubj">化学基礎</span>）</span>
+        <span class="rpct"><span id="rdPct">0</span><small>%</small></span>
+      </div>
+      <div class="rbar"><i id="rdBar" style="width:0%"></i></div>
+      <div class="rmeta">
+        <div>要復習<b id="rdWeak" class="warn">0問</b></div>
+        <div>未着手の単元<b id="rdUntouched">0</b></div>
+        <div>今日の解答<b id="rdToday">0問</b></div>
+      </div>
+    </div>
+    <button class="mode quest" onclick="openQuestCategories()">
+      <i class="ti ti-map-2 ic"></i>
+      <div><p class="ttl">単元別演習</p><p class="dsc" id="questDsc">弱点の単元から集中攻略</p></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </button>
+    <button class="mode rand" onclick="startQuiz('random')">
+      <i class="ti ti-dice ic"></i>
+      <div><p class="ttl">ランダム10</p><p class="dsc">共通テスト形式で全範囲から10問</p></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </button>
+    <button class="mode review" onclick="startQuiz('review')">
+      <i class="ti ti-refresh ic"></i>
+      <div><p class="ttl">復習モード</p><p class="dsc" id="reviewDsc">苦手な3問が待っています</p></div>
+      <span class="badge" id="reviewBadge">3</span>
+    </button>
+
+    <p class="section-h">単元別の到達度（弱い順）</p>
+    <div class="card mastery" id="masteryList"></div>
+
+    <p class="section-h">そだてる</p>
+    <button class="mode" style="background:var(--amber-l)" onclick="openAvatar()">
+      <span id="homeAvHead" style="font-size:26px;line-height:1;flex-shrink:0">🐶</span>
+      <div>
+        <p class="ttl" style="color:var(--amber-dd)">マイアバター</p>
+        <p class="dsc" style="color:var(--amber-d)" id="homeAvDsc">ポイントで装備を集めよう</p>
+      </div>
+      <span class="coinpill" style="margin-left:auto"><i class="ti ti-coin"></i><span id="homeCoins">0</span></span>
+    </button>
+  </section>
+
+  <!-- ============ AVATAR (dress-up) ============ -->
+  <section id="avatar" class="screen">
+    <div class="topbar">
+      <button class="navbtn" onclick="goHome()" aria-label="ホームに戻る"><span class="navarrow">‹</span> 戻る</button>
+      <div style="flex:1;text-align:center">
+        <p class="sub" style="display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-mood-smile" style="color:var(--amber-d)"></i>マイアバター</p>
+        <h1 style="font-size:17px">そだてる</h1>
+      </div>
+      <span class="coinpill" id="avCoins"><i class="ti ti-coin"></i><span id="avCoinsVal">0</span></span>
+    </div>
+
+    <div class="avstage">
+      <p class="avbg" id="avBgLabel">背景：なし</p>
+      <div class="avcompo">
+        <span class="layer bg"   id="avBg"></span>
+        <span class="layer body" id="avBody"></span>
+        <span class="layer head" id="avHead"></span>
+        <span class="layer hand" id="avHand"></span>
+        <span class="layer pet"  id="avPet"></span>
+      </div>
+      <p class="avname"><b id="avName">りかマスター</b><span class="lv" id="avLv">Lv.1</span></p>
+      <div class="avxp"><i id="avXpBar" style="width:0%"></i></div>
+      <p class="avxptxt" id="avXpTxt">EXP 0 / 100</p>
+    </div>
+
+    <div class="slottabs" id="slotTabs">
+      <button class="slottab active" data-slot="head" onclick="setSlot('head')">頭</button>
+      <button class="slottab" data-slot="body" onclick="setSlot('body')">どうぶつ</button>
+      <button class="slottab" data-slot="hand" onclick="setSlot('hand')">手</button>
+      <button class="slottab" data-slot="background" onclick="setSlot('background')">背景</button>
+      <button class="slottab" data-slot="pet" onclick="setSlot('pet')">仲間</button>
+    </div>
+    <div class="itemgrid" id="itemGrid"></div>
+  </section>
+
+  <!-- ============ QUEST CATEGORIES (step 1) ============ -->
+  <section id="cats" class="screen">
+    <div class="topbar">
+      <button class="navbtn" onclick="goHome()" aria-label="ホームに戻る"><span class="navarrow">‹</span> 戻る</button>
+      <div style="flex:1;text-align:center">
+        <p class="sub" style="display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-map-2" style="color:var(--blue-d)"></i>単元クエスト</p>
+        <h1 style="font-size:17px" id="catsTitle">単元を選ぶ</h1>
+      </div>
+      <button class="navbtn" onclick="goHome()" aria-label="ホーム">ホーム</button>
+    </div>
+    <div id="catSubjects"></div>
+  </section>
+
+  <!-- ============ QUEST COUNT (step 2) ============ -->
+  <section id="qcount" class="screen">
+    <div class="topbar">
+      <button class="navbtn" onclick="openQuestCategories()" aria-label="単元選択に戻る"><span class="navarrow">‹</span> 戻る</button>
+      <div style="flex:1;text-align:center">
+        <p class="sub" style="display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-map-2" style="color:var(--blue-d)"></i>単元クエスト</p>
+        <h1 style="font-size:17px" id="qcountTitle">出題数を選ぶ</h1>
+      </div>
+      <button class="navbtn" onclick="goHome()" aria-label="ホーム">ホーム</button>
+    </div>
+    <div class="card cnt-summary" id="qcountSummary"></div>
+    <p class="section-h">何問挑戦する？</p>
+    <div id="qcountOptions"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="quiz" class="screen">
+    <div class="qhead">
+      <button class="qclose" onclick="confirmQuit()" aria-label="クイズをやめる">✕ やめる</button>
+      <div class="qprog"><i id="qProgBar"></i></div>
+      <span class="qcount" id="qCount">1 / 10</span>
+    </div>
+    <div class="qmeta">
+      <span class="chip" id="qChip">化学基礎・物質の構成</span>
+      <span class="rightmeta">
+        <span class="diffbadge diff1" id="qDiff"><span class="st">★</span>基礎</span>
+        <span class="timer"><i class="ti ti-clock"></i><span id="qTimer">00:00</span></span>
+      </span>
+    </div>
+    <div class="qtext" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <div id="qFeedback"></div>
+    <div id="qReviewNote"></div>
+    <button class="btn green hidden" id="qNext" onclick="nextQuestion()">
+      次の問題へ <i class="ti ti-arrow-right"></i>
+    </button>
+  </section>
+
+  <!-- ============ CLEAR (review graduation) ============ -->
+  <section id="clear" class="screen center">
+    <div class="medal">
+      <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="クリア">
+        <circle cx="60" cy="60" r="52" fill="var(--green-l)"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="3"/>
+        <circle cx="60" cy="60" r="40" fill="var(--green-m)"/>
+      </svg>
+      <div class="ic"><i class="ti ti-trophy"></i></div>
+    </div>
+    <div class="stars">
+      <i class="ti ti-star" style="font-size:18px"></i>
+      <i class="ti ti-star" style="font-size:24px"></i>
+      <i class="ti ti-star" style="font-size:18px"></i>
+    </div>
+    <p class="title-xl">クリア！</p>
+    <p class="lead">苦手だった問題を2回連続で正解。<br>復習リストから外れました。</p>
+    <div class="card recap">
+      <p class="k">クリアした問題</p>
+      <p class="q" id="clearQ">原子核に含まれ、電荷を持たない粒子は？</p>
+    </div>
+    <div class="twocol">
+      <div class="ministat"><p class="k">残りの復習</p><p class="v"><span id="clearRemain">2</span> <small>問</small></p></div>
+      <div class="ministat"><p class="k">獲得ポイント</p><p class="v" style="color:var(--green-d)">+<span id="clearPts">30</span> <small>pt</small></p></div>
+    </div>
+    <button class="btn green" id="clearNext" style="margin-bottom:8px" onclick="nextQuestion()">
+      次の復習へ <i class="ti ti-arrow-right"></i>
+    </button>
+    <button class="btn ghost" onclick="goHome()">ホームに戻る</button>
+  </section>
+
+  <!-- ============ SESSION SUMMARY ============ -->
+  <section id="summary" class="screen center">
+    <div class="medal">
+      <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="セッション完了">
+        <circle cx="60" cy="60" r="52" fill="var(--blue-l)"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="var(--blue)" stroke-width="3"/>
+      </svg>
+      <div class="ic" style="color:var(--blue-d)"><i class="ti ti-flag-check"></i></div>
+    </div>
+    <p class="title-xl">セッション完了！</p>
+    <p class="lead" id="sumLead">10問おつかれさま。</p>
+    <div class="twocol">
+      <div class="ministat"><p class="k">正解数</p><p class="v"><span id="sumCorrect">8</span><small> / <span id="sumTotal">10</span></small></p></div>
+      <div class="ministat"><p class="k">獲得ポイント</p><p class="v" style="color:var(--green-d)">+<span id="sumPts">80</span> <small>pt</small></p></div>
+    </div>
+    <button class="btn green" style="margin-bottom:8px" onclick="goHome()">
+      ホームに戻る <i class="ti ti-home"></i>
+    </button>
+  </section>
+
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.2.0/iconfont/tabler-icons.min.css">
+<script>
+/* ======================================================================
+   理科基礎マスター — 単一ファイルプロトタイプ
+   - questions.json があれば fetch、無ければ内蔵フォールバックを使用
+   - localStorage: 連続ログイン / 解答ログ / 誤答・復習管理(review_status)
+   ====================================================================== */
+
+const FALLBACK_QUESTIONS = [
+  {id:"chem_001",subject:"化学基礎",category:"物質の構成",difficulty:1,
+   question:"原子核に含まれ、電荷を持たない粒子はどれか。次のうち最も適切なものを選びなさい。",
+   choices:["中性子","陽子","電子","中間子"],
+   explanation:"原子核は陽子（正電荷）と中性子（電荷なし）で構成されます。電子は核の外を回る負電荷の粒子なので混同に注意。"},
+  {id:"chem_002",subject:"化学基礎",category:"物質の構成",difficulty:1,
+   question:"純物質と混合物の組み合わせとして正しいものはどれか。",
+   choices:["水は純物質、空気は混合物","水は混合物、空気は純物質","どちらも純物質","どちらも混合物"],
+   explanation:"水(H₂O)は単一の物質＝純物質。空気は窒素・酸素などが混ざった混合物です。"},
+  {id:"chem_003",subject:"化学基礎",category:"化学反応",difficulty:2,
+   question:"塩酸に水酸化ナトリウム水溶液を加えたときに起こる反応は何か。",
+   choices:["中和反応","酸化還元反応","沈殿反応","分解反応"],
+   explanation:"酸(HCl)と塩基(NaOH)が反応して塩(NaCl)と水を生じるのが中和反応です。"},
+  {id:"chem_004",subject:"化学基礎",category:"化学反応",difficulty:2,
+   question:"pH=3 の水溶液の性質として正しいものはどれか。",
+   choices:["酸性","中性","塩基性","判定できない"],
+   explanation:"pHが7より小さいほど酸性が強くなります。pH=3 は酸性です。"},
+  {id:"bio_001",subject:"生物基礎",category:"細胞",difficulty:1,
+   question:"植物細胞には存在するが、動物細胞には存在しない構造はどれか。",
+   choices:["細胞壁","核","ミトコンドリア","細胞膜"],
+   explanation:"細胞壁は植物細胞に特有。核・ミトコンドリア・細胞膜は動植物どちらにもあります。"},
+  {id:"bio_002",subject:"生物基礎",category:"細胞",difficulty:1,
+   question:"細胞内で「エネルギーの通貨」と呼ばれる物質はどれか。",
+   choices:["ATP","DNA","RNA","グルコース"],
+   explanation:"ATP(アデノシン三リン酸)は生命活動のエネルギーを供給する分子で「エネルギーの通貨」と呼ばれます。"},
+  {id:"bio_003",subject:"生物基礎",category:"体内環境",difficulty:2,
+   question:"血糖値を下げるはたらきを持つホルモンはどれか。",
+   choices:["インスリン","アドレナリン","グルカゴン","チロキシン"],
+   explanation:"インスリンはすい臓から分泌され、血糖値を下げます。グルカゴンは逆に上げる作用です。"},
+  {id:"bio_004",subject:"生物基礎",category:"体内環境",difficulty:2,
+   question:"体内環境を一定に保とうとする性質を何というか。",
+   choices:["恒常性（ホメオスタシス）","免疫","代謝","適応"],
+   explanation:"体温・血糖・水分などを一定範囲に保つ性質を恒常性（ホメオスタシス）といいます。"}
+];
+
+const STORE_KEY = "rikakiso_v1";
+const PASS_TO_CLEAR = 2;       // review_status がこの値で「クリア」
+const PTS_CORRECT = 10;
+
+let DB = [];                   // 全問題（M_Questions相当）
+let state = loadState();
+let session = null;            // 現在のセッション
+
+/* ---------- 永続化 ---------- */
+function defaultState(){
+  return {
+    profile:{name:"", lastLogin:null, streak:0},
+    logs:[],                          // {qid,correct,ts,ms}
+    wrong:{},                         // qid -> {wrong_count, review_status}
+    pointsToday:0, todayKey:null,
+    subject:"化学基礎",               // 選択中の科目タブ
+    avatar:defaultAvatar()            // コイン・EXP・装備・所持品
+  };
+}
+function defaultAvatar(){
+  return {
+    coins:0,                          // 装備購入用（ポイントと1:1で貯まる）
+    exp:0, level:1,                   // アバター経験値・レベル
+    combo:0,                          // 連続正解カウンタ（ボーナス用）
+    equipped:{ head:null, body:"body_face", hand:null, background:null, pet:null },
+    owned:["body_face"],              // 所持アイテムID
+    slot:"head"                       // 着せ替え画面で選択中の部位
+  };
+}
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(STORE_KEY));
+    if(!s) return defaultState();
+    // 既存ユーザーの移行：avatar が無ければ補完
+    if(!s.avatar){
+      s.avatar = defaultAvatar();
+      // 過去の正解実績ぶんをコイン・EXPに換算して付与（救済）
+      const past = (s.logs||[]).filter(l=>l.correct).length * PTS_CORRECT;
+      s.avatar.coins = past;
+      addExpTo(s.avatar, past);
+    }
+    if(!s.avatar.equipped) s.avatar = defaultAvatar();
+    return s;
+  }
+  catch(e){ return defaultState(); }
+}
+function saveState(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ===================================================================
+   アバター育成：アイテムマスタ・ポイント換算・着せ替え
+   =================================================================== */
+
+/* ---------- ③ アイテムマスタ ----------
+   slot   : head / body / hand / background / pet
+   id     : 一意キー（localStorage保存用）
+   emoji  : 表示絵文字
+   name   : 表示名
+   price  : 購入コスト（コイン）。0 は初期装備
+   unlock : 解放条件（満たすまで購入不可）。null は無条件
+            {level:n}         … アバターLv n 以上
+            {graduated:n}     … 復習卒業(review_status=2)が累計 n 問以上
+            {answered:n}      … 累計解答数 n 問以上
+   rarity : N / R / SR（表示用） */
+const ITEMS = [
+  // --- 動物アバター本体（土台。最低1つは常に装備される） ---
+  {slot:"body", id:"body_face",   emoji:"🐶", name:"いぬ",       price:0,    unlock:null,            rarity:"N"},
+  {slot:"body", id:"body_cat",    emoji:"🐱", name:"ねこ",       price:150,  unlock:null,            rarity:"N"},
+  {slot:"body", id:"body_rabbit", emoji:"🐰", name:"うさぎ",     price:200,  unlock:null,            rarity:"N"},
+  {slot:"body", id:"body_koala",  emoji:"🐨", name:"コアラ",     price:300,  unlock:{answered:30},   rarity:"N"},
+  {slot:"body", id:"body_owl",    emoji:"🦉", name:"ふくろう",   price:350,  unlock:{level:3},       rarity:"R"},
+  {slot:"body", id:"body_panda",  emoji:"🐼", name:"パンダ",     price:400,  unlock:{level:4},       rarity:"R"},
+  {slot:"body", id:"body_bear",   emoji:"🐻", name:"くま",       price:550,  unlock:{level:5},       rarity:"R"},
+  {slot:"body", id:"body_fox",    emoji:"🦊", name:"きつね",     price:700,  unlock:{level:7},       rarity:"R"},
+  {slot:"body", id:"body_tiger",  emoji:"🐯", name:"とら",       price:1000, unlock:{graduated:5},   rarity:"SR"},
+  {slot:"body", id:"body_lion",   emoji:"🦁", name:"ライオン",   price:1300, unlock:{level:9},       rarity:"SR"},
+
+  // --- 頭 ---
+  {slot:"head", id:"head_goggle",  emoji:"🥽", name:"ゴーグル",       price:120,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_micro",   emoji:"🔬", name:"顕微鏡ヘッド",   price:250,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_cap",     emoji:"🧢", name:"研究キャップ",   price:100,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_grad",    emoji:"🎓", name:"博士帽",         price:400,  unlock:{level:3},       rarity:"R"},
+  {slot:"head", id:"head_bulb",    emoji:"💡", name:"ひらめき電球",   price:550,  unlock:{answered:60},   rarity:"R"},
+  {slot:"head", id:"head_crown",   emoji:"👑", name:"ノーベル冠",     price:1500, unlock:{level:10},      rarity:"SR"},
+
+  // --- 手 ---
+  {slot:"hand", id:"hand_flask",   emoji:"⚗️", name:"フラスコ",       price:100,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_tube",    emoji:"🧪", name:"試験管",         price:100,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_magnet",  emoji:"🧲", name:"磁石",           price:130,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_dna",     emoji:"🧬", name:"DNA模型",        price:300,  unlock:{answered:50},   rarity:"R"},
+  {slot:"hand", id:"hand_scope",   emoji:"🔭", name:"望遠鏡",         price:350,  unlock:{level:5},       rarity:"R"},
+  {slot:"hand", id:"hand_book",    emoji:"📕", name:"参考書",         price:280,  unlock:{level:4},       rarity:"R"},
+
+  // --- 背景 ---
+  {slot:"background", id:"bg_none", emoji:"",   name:"なし",           price:0,    unlock:null,            rarity:"N", label:"なし"},
+  {slot:"background", id:"bg_lab",  emoji:"🏫", name:"実験室",         price:500,  unlock:{level:5},       rarity:"R", label:"実験室"},
+  {slot:"background", id:"bg_cell", emoji:"🧫", name:"細胞の中",       price:500,  unlock:{level:5},       rarity:"R", label:"細胞の中"},
+  {slot:"background", id:"bg_mountain",emoji:"⛰️",name:"フィールド調査",price:350, unlock:{answered:40},   rarity:"R", label:"フィールド調査"},
+  {slot:"background", id:"bg_night",emoji:"🌃", name:"夜の自習室",     price:400,  unlock:{level:6},       rarity:"R", label:"夜の自習室"},
+  {slot:"background", id:"bg_space",emoji:"🌌", name:"分子の宇宙",     price:900,  unlock:{graduated:10}, rarity:"SR", label:"分子の宇宙"},
+
+  // --- 仲間（ペット） ---
+  {slot:"pet", id:"pet_ecoli",     emoji:"🦠", name:"大腸菌くん",     price:300,  unlock:null,            rarity:"N"},
+  {slot:"pet", id:"pet_mouse",     emoji:"🐭", name:"実験ねずみ",     price:250,  unlock:null,            rarity:"N"},
+  {slot:"pet", id:"pet_frog",      emoji:"🐸", name:"カエル先輩",     price:600,  unlock:{answered:80},   rarity:"R"},
+  {slot:"pet", id:"pet_cat",       emoji:"🐈", name:"研究室の看板猫", price:500,  unlock:{level:6},       rarity:"R"},
+  {slot:"pet", id:"pet_water",     emoji:"💧", name:"水分子ちゃん",   price:800,  unlock:{graduated:10}, rarity:"SR"}
+];
+const itemById = id => ITEMS.find(x=>x.id===id) || null;
+
+/* ---------- ② ポイント → コイン / EXP 換算 ----------
+   ・正解1問 = PTS_CORRECT(10) を「コイン」と「EXP」両方に加算
+   ・初見の問題に正解 = +5 ボーナス
+   ・3連続正解ごと = +5 ボーナス
+   ・復習卒業(review_status が PASS_TO_CLEAR 到達) = +30
+   awardForAnswer() は answer() から呼ぶ。直近の獲得内訳を返す。 */
+const EXP_PER_LEVEL = 100;            // 必要EXP = level * EXP_PER_LEVEL
+function expNeeded(level){ return level * EXP_PER_LEVEL; }
+
+function addExpTo(av, amount){
+  av.exp += amount;
+  while(av.exp >= expNeeded(av.level)){
+    av.exp -= expNeeded(av.level);
+    av.level++;
+  }
+}
+function award(amount){               // コインとEXPを同時に積む
+  if(amount<=0) return;
+  const av = state.avatar;
+  av.coins += amount;
+  addExpTo(av, amount);
+}
+
+/* 解答1問ぶんの報酬を計算・付与。{total, parts:[{label,pt}], levelUp} を返す */
+function awardForAnswer(q, isCorrect, firstTry, graduated){
+  const av = state.avatar;
+  const before = av.level;
+  const parts = [];
+  if(isCorrect){
+    parts.push({label:"正解", pt:PTS_CORRECT});
+    if(firstTry) parts.push({label:"初正解ボーナス", pt:5});
+    av.combo++;
+    if(av.combo % 3 === 0) parts.push({label:`${av.combo}連続`, pt:5});
+  } else {
+    av.combo = 0;
+  }
+  if(graduated) parts.push({label:"復習クリア", pt:30});
+
+  const total = parts.reduce((s,p)=>s+p.pt, 0);
+  award(total);
+  return { total, parts, levelUp: av.level>before, newLevel: av.level };
+}
+
+/* ---------- 解放条件の判定 ---------- */
+function graduatedCount(){ return Object.values(state.wrong).filter(w=>w.review_status>=PASS_TO_CLEAR).length; }
+function isUnlocked(item){
+  const u = item.unlock; if(!u) return true;
+  const av = state.avatar;
+  if(u.level    != null && av.level < u.level) return false;
+  if(u.graduated!= null && graduatedCount() < u.graduated) return false;
+  if(u.answered != null && state.logs.length < u.answered) return false;
+  return true;
+}
+function unlockLabel(item){
+  const u = item.unlock; if(!u) return "";
+  if(u.level)     return `Lv${u.level}で解放`;
+  if(u.graduated) return `復習${u.graduated}問クリアで解放`;
+  if(u.answered)  return `${u.answered}問解いて解放`;
+  return "";
+}
+
+/* ---------- ① 着せ替え画面 ---------- */
+function openAvatar(){ renderAvatar(); show("avatar"); }
+
+function setSlot(slot){
+  state.avatar.slot = slot;
+  saveState();
+  document.querySelectorAll("#slotTabs .slottab").forEach(t=>t.classList.toggle("active", t.dataset.slot===slot));
+  renderItemGrid();
+}
+
+function emojiOf(id){ const it=itemById(id); return it?it.emoji:""; }
+
+/* ---------- SVG画像アセット ----------
+   ファイルは assets/avatar/{slotDir}/{id}.svg に配置（idと完全一致）。
+   背景フォルダだけ "bg"。背景なし(bg_none)は画像なし。
+   画像が無い/読めない場合は絵文字にフォールバックする。 */
+const ASSET_BASE = "assets/avatar";
+function slotDir(slot){ return slot==="background" ? "bg" : slot; }
+function svgPathOf(id){
+  const it = itemById(id);
+  if(!it) return "";
+  if(it.id==="bg_none") return "";
+  return `${ASSET_BASE}/${slotDir(it.slot)}/${it.id}.svg`;
+}
+/* レイヤー要素に画像を描画。読み込み失敗時は絵文字にフォールバック */
+function paintLayer(elId, itemId, fallbackEmoji){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const it = itemById(itemId);
+  const path = itemId ? svgPathOf(itemId) : "";
+  if(!path){
+    // 画像なし（未装備 or 背景なし）→ フォールバック絵文字 or 空
+    el.innerHTML = fallbackEmoji ? `<span class="emoji-fallback">${fallbackEmoji}</span>` : "";
+    return;
+  }
+  const fb = (it && it.emoji) ? it.emoji : (fallbackEmoji||"");
+  el.innerHTML =
+    `<img src="${path}" alt="${it?it.name:''}" `+
+    `onerror="this.parentNode.innerHTML='<span class=&quot;emoji-fallback&quot;>${fb}</span>'">`;
+}
+
+function renderAvatarFigure(){
+  const eq = state.avatar.equipped;
+  // 削除された動物を装備中だった既存ユーザーは いぬ に戻す
+  if(!itemById(eq.body)){ eq.body = "body_face"; saveState(); }
+  paintLayer("avBody", eq.body || "body_face", "🐶");
+  paintLayer("avHead", eq.head, "");
+  paintLayer("avHand", eq.hand, "");
+  paintLayer("avPet",  eq.pet,  "");
+  const bg = itemById(eq.background);
+  paintLayer("avBg", (bg && bg.id!=="bg_none") ? eq.background : null, "");
+  document.getElementById("avBgLabel").textContent = "背景：" + (bg && bg.id!=="bg_none" ? bg.name : "なし");
+}
+
+function renderAvatar(){
+  const av = state.avatar;
+  document.getElementById("avCoinsVal").textContent = av.coins;
+  document.getElementById("avName").textContent = state.profile.name || "りかマスター";
+  document.getElementById("avLv").textContent = "Lv." + av.level;
+  const need = expNeeded(av.level);
+  document.getElementById("avXpBar").style.width = Math.round(av.exp/need*100) + "%";
+  document.getElementById("avXpTxt").textContent = `EXP ${av.exp} / ${need}`;
+  renderAvatarFigure();
+  // タブの選択状態を復元
+  const slot = av.slot || "head";
+  document.querySelectorAll("#slotTabs .slottab").forEach(t=>t.classList.toggle("active", t.dataset.slot===slot));
+  renderItemGrid();
+}
+
+function renderItemGrid(){
+  const av = state.avatar;
+  const slot = av.slot || "head";
+  const grid = document.getElementById("itemGrid");
+  grid.innerHTML = "";
+  ITEMS.filter(it=>it.slot===slot).forEach(it=>{
+    const owned = av.owned.includes(it.id);
+    const equipped = av.equipped[slot] === it.id;
+    const unlocked = isUnlocked(it);
+    const card = document.createElement("button");
+    card.className = "itemcard" + (equipped?" equipped":"") + (!owned && !unlocked ? " locked":"");
+
+    let stat;
+    if(equipped)        stat = `<p class="istat eq"><i class="ti ti-check"></i>装備中</p>`;
+    else if(owned)      stat = `<p class="istat own">タップで装備</p>`;
+    else if(!unlocked)  stat = `<p class="istat lock"><i class="ti ti-lock"></i>${unlockLabel(it)}</p>`;
+    else                stat = `<p class="istat buy"><i class="ti ti-coin"></i>${it.price}</p>`;
+
+    const path = svgPathOf(it.id);
+    const fb = it.emoji || (it.label || "—");
+    const face = path
+      ? `<img class="ithumb" src="${path}" alt="${it.name}" onerror="this.outerHTML='<div class=&quot;iemoji&quot;>${fb}</div>'">`
+      : `<div class="iemoji">${fb}</div>`;
+    card.innerHTML = `${face}<p class="iname">${it.name}</p>${stat}`;
+    card.onclick = ()=>onItemTap(it);
+    grid.appendChild(card);
+  });
+}
+
+function onItemTap(it){
+  const av = state.avatar;
+  const owned = av.owned.includes(it.id);
+  if(!owned){
+    if(!isUnlocked(it)){ toast(unlockLabel(it)); return; }
+    if(av.coins < it.price){ toast(`コインが ${it.price - av.coins} 枚たりません`); return; }
+    av.coins -= it.price;
+    av.owned.push(it.id);
+    toast(`「${it.name}」を購入しました`);
+  }
+  // 装備（背景の「なし」も装備として扱う）
+  av.equipped[it.slot] = it.id;
+  saveState();
+  renderAvatar();
+  syncHomeAvatar();
+}
+
+/* ---------- トースト ---------- */
+let toastTimer=null;
+function toast(msg){
+  let el = document.getElementById("toast");
+  if(!el){ el=document.createElement("div"); el.id="toast"; el.className="toast"; document.body.appendChild(el); }
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove("show"), 1600);
+}
+
+/* ホーム側のアバター表示（コイン・顔・説明）を同期 */
+function syncHomeAvatar(){
+  const av = state.avatar;
+  const c = document.getElementById("homeCoins"); if(c) c.textContent = av.coins;
+  const h = document.getElementById("homeAvHead");
+  if(h){
+    const bodyId = av.equipped.body || "body_face";
+    const path = svgPathOf(bodyId);
+    const fb = emojiOf(bodyId) || "🐶";
+    h.innerHTML = path
+      ? `<img src="${path}" alt="" style="width:34px;height:34px;object-fit:contain;display:block" onerror="this.outerHTML='${fb}'">`
+      : fb;
+  }
+  const d = document.getElementById("homeAvDsc");
+  if(d) d.textContent = `Lv.${av.level}・所持コイン${av.coins}`;
+}
+
+
+function todayStr(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function dayDiff(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+
+/* ---------- ログインボーナス判定 ---------- */
+function handleLogin(){
+  const t = todayStr();
+  const p = state.profile;
+  if(p.lastLogin !== t){
+    if(p.lastLogin && dayDiff(p.lastLogin,t)===1) p.streak += 1;
+    else p.streak = 1;
+    p.lastLogin = t;
+  }
+  if(state.todayKey !== t){ state.todayKey = t; state.pointsToday = 0; }
+  if(state.profile.streak < 1) state.profile.streak = 1;
+  saveState();
+}
+
+/* ---------- 集計 ---------- */
+function accuracy(){
+  if(!state.logs.length) return 0;
+  const c = state.logs.filter(l=>l.correct).length;
+  return Math.round(c/state.logs.length*100);
+}
+function todayCount(){ const t=todayStr(); return state.logs.filter(l=>l.ts===t).length; }
+function reviewIds(){ return Object.keys(state.wrong).filter(id=>state.wrong[id].review_status < PASS_TO_CLEAR); }
+
+/* 単元ごとの習得度。
+   分母 = その単元の全問数（DB基準）。
+   分子 = そのうち「直近の解答が正解」だった問題数。
+   → 全問正解で 100%。未挑戦や誤答のままの問題は分子に入らない。 */
+function masteryBySubjectCat(){
+  const map = {};
+  DB.forEach(q=>{
+    const key = q.subject+"・"+q.category;
+    if(!map[key]) map[key]={subject:q.subject,category:q.category,name:key,correctQ:0,total:0};
+    map[key].total++;
+  });
+  // 各問題の「直近の正誤」を判定
+  const latest = {};
+  state.logs.forEach(l=>{ latest[l.qid] = l.correct; }); // logsは追記順なので最後が直近
+  Object.keys(latest).forEach(qid=>{
+    if(!latest[qid]) return;
+    const q = DB.find(x=>x.id===qid); if(!q) return;
+    const key = q.subject+"・"+q.category;
+    if(map[key]) map[key].correctQ++;
+  });
+  return Object.values(map);
+}
+
+/* ---------- 画面遷移 ---------- */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+function goHome(){ session=null; clearInterval(timerInt); renderHome(); show("home"); }
+
+/* ---------- ホーム描画 ---------- */
+function renderHome(){
+  const p = state.profile;
+  document.getElementById("userInitial").textContent = (p.name[0]||"理").toUpperCase();
+  document.getElementById("streakDays").textContent = p.streak;
+
+  // streak dots (1週間サイクル)
+  const dots = document.getElementById("streakDots"); dots.innerHTML="";
+  const filled = ((p.streak-1)%7)+1;
+  for(let i=0;i<7;i++){ const s=document.createElement("span"); if(i<filled)s.className="on"; dots.appendChild(s); }
+
+  // accuracy ring
+  const acc = accuracy();
+  document.getElementById("accVal").textContent = acc;
+  const C = 2*Math.PI*40;
+  const arc = document.getElementById("ringArc");
+  arc.setAttribute("stroke-dashoffset", (C*(1-acc/100)).toFixed(1));
+  arc.setAttribute("stroke", state.subject==="生物基礎" ? "var(--green)" : "var(--blue)");
+
+  document.getElementById("totalCount").textContent = state.logs.length;
+  document.getElementById("todayCount").textContent = todayCount();
+
+  // subject tabs active state + 画面テーマ
+  if(!state.subject) state.subject = "化学基礎";
+  applySubjectTheme(state.subject);
+  document.querySelectorAll("#subjTabs .subjtab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.subj===state.subject);
+  });
+
+  // review（選択中の科目に絞る）
+  const rvAll = reviewIds();
+  const rv = rvAll.filter(id=>{ const q=DB.find(x=>x.id===id); return q && q.subject===state.subject; }).length;
+  const badge = document.getElementById("reviewBadge");
+  const dsc = document.getElementById("reviewDsc");
+  if(rv>0){ badge.textContent=rv; badge.style.display=""; dsc.textContent=`苦手な${rv}問から優先出題`; }
+  else{ badge.style.display="none"; dsc.textContent="苦手はありません。この調子！"; }
+
+  // mastery（選択中の科目の単元のみ）— 受験生向けに「弱い単元」を上に表示
+  const ml = document.getElementById("masteryList"); ml.innerHTML="";
+  const isChem = state.subject==="化学基礎";
+  const accent = isChem ? "var(--blue)" : "var(--green)";
+  const icon = isChem ? "ti-flask" : "ti-dna";
+  const rows = masteryBySubjectCat().filter(r=>r.subject===state.subject)
+    .map(r=>({...r, pct: r.total ? Math.round(r.correctQ/r.total*100) : 0}))
+    .sort((a,b)=>a.pct-b.pct);
+  rows.forEach(r=>{
+    const pct = r.pct;
+    const fill = pct>=80 ? accent : (isChem?"var(--blue-m)":"var(--green-m)");
+    const div = document.createElement("div"); div.className="mrow";
+    div.innerHTML =
+      `<div class="mtop"><span class="mname"><i class="ti ${icon}" style="color:${accent}"></i>${r.category}</span>`+
+      `<span class="mpct">${r.correctQ}/${r.total}問・${pct}%</span></div>`+
+      `<div class="mbar"><i style="width:${pct}%;background:${fill}"></i></div>`;
+    ml.appendChild(div);
+  });
+  if(!rows.length) ml.innerHTML = `<p class="sub" style="margin:0">この科目の問題がありません。</p>`;
+
+  // 入試仕上がり度カード（科目全体の正答済み割合・要復習・未着手単元）
+  const totalQ = rows.reduce((s,r)=>s+r.total,0);
+  const doneQ  = rows.reduce((s,r)=>s+r.correctQ,0);
+  const rdPct = totalQ ? Math.round(doneQ/totalQ*100) : 0;
+  const untouched = rows.filter(r=>r.correctQ===0 && !state.logs.some(l=>{
+    const q=DB.find(x=>x.id===l.qid); return q && q.subject===r.subject && q.category===r.category;
+  })).length;
+  const setTxt=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setTxt("rdSubj", state.subject);
+  setTxt("rdPct", rdPct);
+  const rdBar=document.getElementById("rdBar"); if(rdBar) rdBar.style.width=rdPct+"%";
+  const rdWeak=document.getElementById("rdWeak");
+  if(rdWeak){ rdWeak.textContent=rv+"問"; rdWeak.className = rv>0 ? "warn" : ""; }
+  setTxt("rdUntouched", untouched);
+  setTxt("rdToday", todayCount()+"問");
+
+  // 単元別演習の説明：最も弱い単元を提示
+  const qd = document.getElementById("questDsc");
+  if(qd){
+    const weakest = rows.find(r=>r.pct<100);
+    qd.textContent = weakest
+      ? `おすすめ：「${weakest.category}」（到達度${weakest.pct}%）`
+      : "全単元を制覇！仕上げの周回へ";
+  }
+
+  syncHomeAvatar();
+}
+
+/* ---------- 科目テーマ適用（画面全体の色分け） ---------- */
+function applySubjectTheme(subj){
+  const app = document.getElementById("app");
+  if(app) app.setAttribute("data-subject", subj);
+  const isChem = subj==="化学基礎";
+  const nm = document.getElementById("subjBannerName");
+  const ic = document.getElementById("subjBannerIcon");
+  if(nm) nm.textContent = subj;
+  if(ic) ic.className = "ti " + (isChem ? "ti-flask" : "ti-dna");
+}
+
+/* ---------- 科目タブ切り替え ---------- */
+function setSubject(subj){
+  state.subject = subj;
+  saveState();
+  applySubjectTheme(subj);
+  renderHome();
+}
+
+/* ---------- クイズ開始 ---------- */
+// 科目に応じたチップ色（化学=青、生物=緑、その他=ニュートラル）
+function subjectChipColors(subject){
+  if(subject==="化学基礎") return ["var(--blue-l)","var(--blue-d)"];
+  if(subject==="生物基礎") return ["var(--green-l)","var(--green-d)"];
+  return ["var(--line)","var(--muted)"];
+}
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* 難易度ラベル（受験生が問題レベルを把握できるように） 1:基礎 2:標準 3:発展 */
+function diffInfo(d){
+  const n = Number(d)||1;
+  if(n>=3) return {cls:"diff3", star:"★★★", label:"発展"};
+  if(n===2) return {cls:"diff2", star:"★★",  label:"標準"};
+  return {cls:"diff1", star:"★",   label:"基礎"};
+}
+
+function startQuiz(mode, category, count){
+  let pool;
+  if(mode==="review"){
+    const ids = reviewIds().filter(id=>{ const q=DB.find(x=>x.id===id); return q && q.subject===state.subject; });
+    if(!ids.length){ alert(`${state.subject}に復習する問題はありません。`); return; }
+    pool = ids.map(id=>DB.find(q=>q.id===id)).filter(Boolean);
+  } else if(mode==="random"){
+    pool = shuffle(DB.filter(q=>q.subject===state.subject)).slice(0,10);
+    if(!pool.length){ alert(`${state.subject}の問題がありません。`); return; }
+  } else { // quest: 指定カテゴリの問題から count 問
+    pool = shuffle(DB.filter(q=>q.category===category));
+    if(!pool.length){ alert("この単元には問題がありません。"); return; }
+    if(count && count < pool.length) pool = pool.slice(0, count);
+  }
+  session = { mode, category, queue:[...pool], idx:0, correct:0, points:0, total:pool.length, lastClear:null };
+  show("quiz");
+  renderQuestion();
+}
+
+/* ---------- 単元クエスト：カテゴリ選択（ステップ1） ---------- */
+function openQuestCategories(){ renderCategories(); show("cats"); }
+function renderCategories(){
+  // 科目→カテゴリ の順序を DB 出現順で維持
+  const order = [];
+  const map = {};
+  DB.forEach(q=>{
+    const key = q.subject+"\u0001"+q.category;
+    if(!map[key]){ map[key]={subject:q.subject,category:q.category,total:0,answered:0,correct:0}; order.push(key); }
+    map[key].total++;
+  });
+  // 解答済み/正解の集計（カテゴリ単位、最新の解答を1問1状態として）
+  const seen = {};
+  state.logs.forEach(l=>{
+    const q = DB.find(x=>x.id===l.qid); if(!q) return;
+    const key = q.subject+"\u0001"+q.category;
+    if(!map[key]) return;
+    seen[key] = seen[key] || {};
+    seen[key][l.qid] = l.correct; // 最後の解答が残る
+  });
+  Object.keys(seen).forEach(key=>{
+    const ids = Object.keys(seen[key]);
+    map[key].answered = ids.length;
+    map[key].correct = ids.filter(id=>seen[key][id]).length;
+  });
+
+  const subjects = {};
+  order.forEach(key=>{ const c=map[key]; (subjects[c.subject]=subjects[c.subject]||[]).push(c); });
+
+  const wrap = document.getElementById("catSubjects"); wrap.innerHTML="";
+  const subject = state.subject || "化学基礎";
+  const titleEl = document.getElementById("catsTitle");
+  if(titleEl) titleEl.textContent = `${subject}・単元を選ぶ`;
+  const list = subjects[subject] || [];
+  const isChem = subject==="化学基礎";
+  const cls = isChem?"chem":"bio";
+
+  list.forEach(c=>{
+    const pct = c.total ? Math.round(c.correct/c.total*100) : 0;  // 正解数/全問数
+    const done = c.total>0 && c.correct>=c.total;                  // 全問正解で制覇
+    const catIcon = isChem?"ti-atom-2":"ti-microscope";
+    const b=document.createElement("button");
+    b.className="catcard "+cls;
+    b.onclick=()=>openQuestCount(c.category, c.total);
+    b.innerHTML =
+      `<span class="cic"><i class="ti ${catIcon}"></i></span>`+
+      `<span class="cbody">`+
+        `<span class="cname">${c.category}</span>`+
+        `<span class="cmeta"><span><i class="ti ti-stack-2" style="font-size:13px;vertical-align:-2px"></i> ${c.total}問</span>`+
+          (c.answered>0?`<span>正解 ${c.correct}/${c.total}</span>`:`<span>未挑戦</span>`)+
+          (done?`<span class="clear-tag"><i class="ti ti-circle-check" style="font-size:13px"></i> 制覇</span>`:``)+
+        `</span>`+
+        `<span class="cprog"><i style="width:${pct}%"></i></span>`+
+      `</span>`+
+      `<i class="ti ti-chevron-right cchev"></i>`;
+    wrap.appendChild(b);
+  });
+  if(!list.length) wrap.innerHTML=`<p class="sub" style="margin:24px 2px">${subject}の問題がありません。</p>`;
+}
+
+/* ---------- 単元クエスト：出題数選択（ステップ2） ---------- */
+function openQuestCount(category, total){
+  renderQuestCount(category, total);
+  show("qcount");
+}
+function renderQuestCount(category, total){
+  const subject = state.subject || "化学基礎";
+  document.getElementById("qcountTitle").textContent = `${category}・出題数を選ぶ`;
+
+  // サマリー（科目色：化学=青、生物=緑）
+  const isChem = subject==="化学基礎";
+  const cBg = isChem ? "var(--blue-m)" : "var(--green-m)";
+  const cFg = isChem ? "var(--blue-dd)" : "var(--green-dd)";
+  const sum = document.getElementById("qcountSummary");
+  sum.innerHTML =
+    `<span class="cic" style="background:${cBg};color:${cFg}"><i class="ti ti-${isChem?"flask":"dna"}"></i></span>`+
+    `<div><p class="cname">${category}</p><p class="cmeta">${subject}・全${total}問</p></div>`;
+
+  // 候補：5/10/20問 と「全問」。全問数を超える固定値は無効化。
+  const optBg = isChem ? "var(--blue-l)" : "var(--green-l)";
+  const optFg = isChem ? "var(--blue-d)" : "var(--green-d)";
+  const presets = [5, 10, 20];
+  const wrap = document.getElementById("qcountOptions"); wrap.innerHTML="";
+  presets.forEach(n=>{
+    const enough = total >= n;
+    const b=document.createElement("button");
+    b.className="cntopt"; if(!enough) b.disabled=true;
+    if(enough) b.onclick=()=>startQuiz("quest", category, n);
+    b.innerHTML =
+      `<span class="nic" style="background:${optBg};color:${optFg}">${n}</span>`+
+      `<span class="nbody"><span class="nname">${n}問に挑戦</span>`+
+      `<span class="ndsc">${enough?`${category}からランダムに${n}問`:`問題が足りません（全${total}問）`}</span></span>`+
+      (enough?`<i class="ti ti-chevron-right nchev" style="color:${optFg}"></i>`:``);
+    wrap.appendChild(b);
+  });
+  // 全問（プリセットと重複する数なら出さない）
+  if(!presets.includes(total)){
+    const b=document.createElement("button");
+    b.className="cntopt";
+    b.onclick=()=>startQuiz("quest", category, total);
+    b.innerHTML =
+      `<span class="nic" style="background:${optBg};color:${optFg}"><i class="ti ti-infinity"></i></span>`+
+      `<span class="nbody"><span class="nname">全問に挑戦</span>`+
+      `<span class="ndsc">この単元の${total}問すべて</span></span>`+
+      `<i class="ti ti-chevron-right nchev" style="color:${optFg}"></i>`;
+    wrap.appendChild(b);
+  }
+}
+
+/* ---------- 出題 ---------- */
+let timerInt=null, qStart=0;
+function renderQuestion(){
+  clearInterval(timerInt);
+  const q = session.queue[session.idx];
+  if(!q){ endSession(); return; }
+
+  // header
+  document.getElementById("qProgBar").style.width = (session.idx/session.total*100)+"%";
+  document.getElementById("qCount").textContent = `${session.idx+1} / ${session.total}`;
+  const chip = document.getElementById("qChip");
+  chip.textContent = q.subject+"・"+q.category;
+  const cc = subjectChipColors(q.subject);
+  chip.style.background=cc[0]; chip.style.color=cc[1];
+
+  // 難易度バッジ（★基礎/★★標準/★★★発展）
+  const di = diffInfo(q.difficulty);
+  const dEl = document.getElementById("qDiff");
+  if(dEl){ dEl.className = "diffbadge "+di.cls; dEl.innerHTML = `<span class="st">${di.star}</span>${di.label}`; }
+
+  document.getElementById("qText").textContent = q.question;
+
+  // choices: 正解=index0、表示時シャッフル
+  const correctText = q.choices[0];
+  const opts = shuffle(q.choices);
+  const keys = ["A","B","C","D"];
+  const wrap = document.getElementById("qChoices"); wrap.innerHTML="";
+  opts.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.className="choice"; b.dataset.text=opt;
+    b.innerHTML=`<span class="key">${keys[i]}</span><span class="txt">${opt}</span>`;
+    b.onclick=()=>answer(q, opt, correctText, b);
+    wrap.appendChild(b);
+  });
+
+  // reset feedback
+  document.getElementById("qFeedback").innerHTML="";
+  document.getElementById("qReviewNote").innerHTML="";
+  document.getElementById("qNext").classList.add("hidden");
+
+  // timer
+  qStart=Date.now();
+  document.getElementById("qTimer").textContent="00:00";
+  timerInt=setInterval(()=>{
+    const s=Math.floor((Date.now()-qStart)/1000);
+    document.getElementById("qTimer").textContent =
+      String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  },500);
+}
+
+/* ---------- 解答処理 ---------- */
+function answer(q, picked, correctText, btnEl){
+  clearInterval(timerInt);
+  const ms = Date.now()-qStart;
+  const isCorrect = picked===correctText;
+
+  // ボタン無効化＋色付け
+  document.querySelectorAll("#qChoices .choice").forEach(b=>{
+    b.disabled=true;
+    const t=b.dataset.text;
+    if(t===correctText){ b.classList.add("correct"); b.querySelector(".key").innerHTML='<span style="font-size:16px;line-height:1">✓</span>';
+      b.insertAdjacentHTML("beforeend",`<span class="tag">正解</span>`); }
+    else if(t===picked){ b.classList.add("wrong"); b.querySelector(".key").innerHTML='<span style="font-size:15px;line-height:1">✕</span>';
+      b.insertAdjacentHTML("beforeend",`<span class="tag">あなたの解答</span>`); }
+    else b.classList.add("dim");
+  });
+
+  // ログ記録（初見判定は記録の前に）
+  const t=todayStr();
+  const firstTry = !state.logs.some(l=>l.qid===q.id);
+  state.logs.push({qid:q.id, correct:isCorrect, ts:t, ms});
+
+  // 復習ステータス更新（卒業判定もここで）
+  let graduated = false;
+  if(!isCorrect){
+    if(!state.wrong[q.id]) state.wrong[q.id]={wrong_count:0,review_status:0};
+    state.wrong[q.id].wrong_count++;
+    state.wrong[q.id].review_status=0; // 誤答でリセット
+  } else if(state.wrong[q.id] && state.wrong[q.id].review_status < PASS_TO_CLEAR){
+    state.wrong[q.id].review_status++;
+    if(state.wrong[q.id].review_status >= PASS_TO_CLEAR) graduated = true;
+  }
+
+  // ② コイン・EXP の付与（連続正解・初正解・復習卒業ボーナス込み）
+  const reward = awardForAnswer(q, isCorrect, firstTry, graduated);
+
+  // フィードバック描画
+  const fb = document.getElementById("qFeedback");
+  if(isCorrect){
+    session.correct++; session.points+=PTS_CORRECT;
+    state.pointsToday+=PTS_CORRECT;
+    const bonusTxt = reward.parts.length>1
+      ? ` <span style="opacity:.85;font-size:11px">(${reward.parts.map(p=>p.label).join("+")})</span>` : "";
+    fb.innerHTML =
+      `<div class="feedback ok"><div class="fh"><i class="ti ti-circle-check"></i>`+
+      `<span class="ft">正解！</span><span class="fp"><i class="ti ti-coin" style="font-size:14px;vertical-align:-2px"></i> +${reward.total}</span></div>`+
+      `<p>${q.explanation}</p>`+
+      (bonusTxt?`<p style="margin:6px 0 0;font-size:12px;color:var(--amber-d)">獲得コイン内訳${bonusTxt}</p>`:``)+
+      `</div>`;
+    if(reward.levelUp) setTimeout(()=>toast(`レベルアップ！ Lv.${reward.newLevel} になりました`), 400);
+  } else {
+    fb.innerHTML =
+      `<div class="feedback ng"><div class="fh"><i class="ti ti-bulb"></i>`+
+      `<span class="ft">確認しよう</span></div><p>${q.explanation}</p></div>`;
+    document.getElementById("qReviewNote").innerHTML =
+      `<div class="reviewnote"><i class="ti ti-refresh"></i>`+
+      `<span>この問題は<b>復習リスト</b>に追加しました</span></div>`;
+  }
+  saveState();
+
+  // 復習モードで「クリア」到達なら専用画面へ
+  if(session.mode==="review" && isCorrect &&
+     state.wrong[q.id] && state.wrong[q.id].review_status >= PASS_TO_CLEAR){
+    session.lastClear = q;
+    const nextBtn = document.getElementById("qNext");
+    nextBtn.classList.remove("hidden");
+    nextBtn.classList.add("hidden");
+    setTimeout(()=>showClear(q), 650);
+    return;
+  }
+
+  // 次へボタン（不正解時は黒、正解時は緑）
+  const nb = document.getElementById("qNext");
+  nb.className = "btn "+(isCorrect?"green":"dark");
+  nb.innerHTML = `次の問題へ <i class="ti ti-arrow-right"></i>`;
+  nb.classList.remove("hidden");
+}
+
+/* ---------- クリア演出 ---------- */
+function showClear(q){
+  document.getElementById("clearQ").textContent = q.question;
+  document.getElementById("clearRemain").textContent = reviewIds().length;
+  document.getElementById("clearPts").textContent = PTS_CORRECT;
+  const cn = document.getElementById("clearNext");
+  if(session.idx+1 >= session.total){ cn.innerHTML=`結果を見る <i class="ti ti-arrow-right"></i>`; }
+  else { cn.innerHTML=`次の復習へ <i class="ti ti-arrow-right"></i>`; }
+  show("clear");
+}
+
+/* ---------- 次の問題 ---------- */
+function nextQuestion(){
+  session.idx++;
+  if(session.idx >= session.total){ endSession(); return; }
+  show("quiz");
+  renderQuestion();
+}
+
+/* ---------- セッション終了 ---------- */
+function endSession(){
+  document.getElementById("sumCorrect").textContent = session.correct;
+  document.getElementById("sumTotal").textContent = session.total;
+  document.getElementById("sumPts").textContent = session.points;
+  const rate = session.total ? Math.round(session.correct/session.total*100) : 0;
+  let msg = `${session.total}問おつかれさま。`;
+  if(rate===100) msg = "全問正解！この単元は本番レベル。";
+  else if(rate>=80) msg = `正答率${rate}%。合格ラインは目前、あと一歩。`;
+  else if(rate>=50) msg = `正答率${rate}%。間違えた問題を復習して定着させよう。`;
+  else msg = `正答率${rate}%。復習モードで確実に取り返そう。`;
+  document.getElementById("sumLead").textContent = msg;
+  show("summary");
+}
+
+/* ---------- 中断確認 ---------- */
+function confirmQuit(){
+  if(!confirm("クイズを中断してホームに戻りますか？\n（この回の進捗は保存されません）")) return;
+  goHome();
+}
+
+/* ---------- データ読み込み ---------- */
+async function loadQuestions(){
+  try{
+    const res = await fetch("questions.json", {cache:"no-store"});
+    if(res.ok){
+      const data = await res.json();
+      if(Array.isArray(data) && data.length){
+        // M_Questions(choice_1..4) 形式にも対応
+        DB = data.map(normalizeQuestion);
+        return;
+      }
+    }
+  }catch(e){ /* ローカル/未配置時は内蔵へ */ }
+  DB = FALLBACK_QUESTIONS.slice();
+}
+function normalizeQuestion(q){
+  if(q.choices) return q;
+  return {
+    id:q.id, subject:q.subject, category:q.category, difficulty:q.difficulty,
+    question:q.question,
+    choices:[q.choice_1,q.choice_2,q.choice_3,q.choice_4].filter(x=>x!=null),
+    explanation:q.explanation||""
+  };
+}
+
+/* ---------- ニックネーム登録 ---------- */
+function submitName(){
+  const input = document.getElementById("nameInput");
+  const name = (input.value||"").trim();
+  const hint = document.getElementById("nameHint");
+  if(!name){ hint.textContent="ニックネームを入力してください。"; input.focus(); return; }
+  state.profile.name = name;
+  saveState();
+  renderHome();
+  show("home");
+}
+function editName(){
+  const cur = state.profile.name || "";
+  const v = prompt("ニックネームを変更", cur);
+  if(v===null) return;                 // キャンセル
+  const name = v.trim();
+  if(!name) return;                    // 空は無視
+  state.profile.name = name.slice(0,12);
+  saveState();
+  renderHome();
+}
+
+/* ---------- 起動 ---------- */
+(async function init(){
+  await loadQuestions();
+  handleLogin();
+
+  // 初回（ニックネーム未登録）はオンボーディングへ
+  if(!state.profile.name){
+    show("onboard");
+    const input = document.getElementById("nameInput");
+    if(input){
+      setTimeout(()=>input.focus(), 100);
+      input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitName(); });
+    }
+    return;
+  }
+
+  renderHome();
+  show("home");
+
+  // アプリショートカット（manifest）からの起動: ?mode=random / review
+  const mode = new URLSearchParams(location.search).get("mode");
+  if(mode==="random") startQuiz("random");
+  else if(mode==="review"){ if(reviewIds().length) startQuiz("review"); }
+})();
+
+/* ---------- Service Worker 登録（新バージョンを検知して自動更新） ---------- */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", async ()=>{
+    try{
+      const reg = await navigator.serviceWorker.register("sw.js");
+
+      // 新しいSWが見つかったら、インストール完了後に即切り替えを依頼
+      reg.addEventListener("updatefound", ()=>{
+        const nw = reg.installing;
+        if(!nw) return;
+        nw.addEventListener("statechange", ()=>{
+          if(nw.state==="installed" && navigator.serviceWorker.controller){
+            nw.postMessage("SKIP_WAITING");
+          }
+        });
+      });
+
+      // 制御するSWが切り替わったら一度だけリロードして最新を表示
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+        if(reloaded) return; reloaded = true;
+        window.location.reload();
+      });
+
+      // 起動時とタブ復帰時に更新チェック
+      reg.update();
+      document.addEventListener("visibilitychange", ()=>{
+        if(document.visibilityState==="visible") reg.update();
+      });
+    }catch(e){ /* 未配置/file:// では無視 */ }
+  });
+}
+</script>
+</body>
+</html>

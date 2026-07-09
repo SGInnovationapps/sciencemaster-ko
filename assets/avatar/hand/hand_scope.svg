@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 望遠鏡 -->
+  <g transform="rotate(28 110 110)">
+    <rect x="92" y="104" width="22" height="13" rx="3" fill="#185FA5"/>
+    <rect x="112" y="101" width="16" height="19" rx="3" fill="#11487f"/>
+    <ellipse cx="128" cy="110.5" rx="3" ry="9" fill="#9fc3e6"/>
+    <rect x="90" y="106" width="5" height="9" rx="2" fill="#BA7517"/>
+  </g>
+  <path d="M100 124 L96 134 M112 126 L116 136" stroke="#777" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

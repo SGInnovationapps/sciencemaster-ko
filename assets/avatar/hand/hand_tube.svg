@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 試験管 -->
+  <rect x="100" y="86" width="14" height="6" rx="1.5" fill="#185FA5"/>
+  <path d="M101 90 V124 Q101 132 107 132 Q113 132 113 124 V90 Z" fill="#dff0fb" stroke="#185FA5" stroke-width="2"/>
+  <path d="M101 112 V124 Q101 131 107 131 Q113 131 113 124 V112 Z" fill="#BA7517" opacity=".75"/>
+  <circle cx="106" cy="116" r="1.6" fill="#ffe2a8"/>
+  <circle cx="109" cy="121" r="1.2" fill="#ffe2a8"/>
+</svg>

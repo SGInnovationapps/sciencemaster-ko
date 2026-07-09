@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 細胞の中 -->
+  <rect x="0" y="0" width="140" height="140" fill="#e9f6ef"/>
+  <circle cx="70" cy="70" r="66" fill="#cfeede"/>
+  <circle cx="62" cy="60" r="22" fill="#a9dcc4"/>
+  <circle cx="62" cy="60" r="9" fill="#7cc6a6"/>
+  <ellipse cx="104" cy="96" rx="14" ry="8" fill="#bfe6d4"/>
+  <ellipse cx="34" cy="104" rx="10" ry="6" fill="#bfe6d4"/>
+  <g fill="#8fcfb0"><circle cx="100" cy="40" r="4"/><circle cx="40" cy="44" r="3"/><circle cx="92" cy="110" r="3"/></g>
+</svg>

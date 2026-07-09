@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 実験室 -->
+  <rect x="0" y="0" width="140" height="140" fill="#e7f0f7"/>
+  <rect x="0" y="100" width="140" height="40" fill="#cdddec"/>
+  <rect x="0" y="96" width="140" height="6" fill="#a9c4dc"/>
+  <rect x="16" y="74" width="10" height="22" rx="2" fill="#bfe8da"/>
+  <path d="M104 76 v8 l-6 12 h16 l-6 -12 v-8 Z" fill="#cfe6f5" stroke="#9bc0dc" stroke-width="1.5"/>
+  <g stroke="#bcd2e6" stroke-width="2"><line x1="0" y1="26" x2="140" y2="26"/><line x1="0" y1="50" x2="140" y2="50"/></g>
+</svg>

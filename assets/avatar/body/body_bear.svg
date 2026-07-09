@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- くま（笑顔） -->
+  <circle cx="40" cy="36" r="15" fill="#9c6b43"/><circle cx="40" cy="36" r="8" fill="#c39468"/>
+  <circle cx="100" cy="36" r="15" fill="#9c6b43"/><circle cx="100" cy="36" r="8" fill="#c39468"/>
+  <ellipse cx="70" cy="78" rx="46" ry="44" fill="#a9764c"/>
+  <ellipse cx="70" cy="92" rx="26" ry="24" fill="#e9d3ba"/>
+  <circle cx="56" cy="60" r="5" fill="#2b2b2b"/><circle cx="54.5" cy="58.2" r="1.6" fill="#fff"/><circle cx="57.6" cy="61.4" r="0.9" fill="#fff" opacity=".8"/><circle cx="84" cy="60" r="5" fill="#2b2b2b"/><circle cx="82.5" cy="58.2" r="1.6" fill="#fff"/><circle cx="85.6" cy="61.4" r="0.9" fill="#fff" opacity=".8"/>
+  <ellipse cx="42" cy="82" rx="6" ry="3.6" fill="#c98a5e" opacity="0.5"/><ellipse cx="98" cy="82" rx="6" ry="3.6" fill="#c98a5e" opacity="0.5"/>
+  <ellipse cx="70" cy="88" rx="7" ry="5.5" fill="#3a2a1c"/>
+  <path d="M70 93 V97" stroke="#5a4130" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M60 97 Q70 108 80 97" stroke="#5a4130" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 三角フラスコ -->
+  <path d="M102 90 V102 L90 126 Q88 132 96 132 H122 Q130 132 128 126 L116 102 V90 Z" fill="#cfe6f5" stroke="#185FA5" stroke-width="2"/>
+  <path d="M96 120 L122 120 Q126 128 120 130 H98 Q92 128 96 120 Z" fill="#1D9E75"/>
+  <rect x="100" y="84" width="18" height="7" rx="2" fill="#185FA5"/>
+  <circle cx="104" cy="124" r="2" fill="#bfe8da"/>
+  <circle cx="114" cy="126" r="1.5" fill="#bfe8da"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 夜の自習室 -->
+  <rect x="0" y="0" width="140" height="140" fill="#2a3550"/>
+  <rect x="14" y="14" width="52" height="42" rx="3" fill="#3c4a6e"/>
+  <line x1="40" y1="14" x2="40" y2="56" stroke="#2a3550" stroke-width="2"/>
+  <line x1="14" y1="35" x2="66" y2="35" stroke="#2a3550" stroke-width="2"/>
+  <circle cx="100" cy="30" r="9" fill="#f5e6a8" opacity=".8"/>
+  <g fill="#cdd6ee"><circle cx="86" cy="18" r="1.4"/><circle cx="120" cy="22" r="1.2"/><circle cx="110" cy="48" r="1.2"/></g>
+  <rect x="0" y="110" width="140" height="30" fill="#222b42"/>
+</svg>

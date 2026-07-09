@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 看板猫 -->
+  <path d="M18 104 L16 92 L26 101 Z" fill="#caa06a"/>
+  <path d="M42 104 L44 92 L34 101 Z" fill="#caa06a"/>
+  <circle cx="30" cy="114" r="16" fill="#d8b483"/>
+  <ellipse cx="30" cy="121" rx="10" ry="8" fill="#f3e4cf"/>
+  <ellipse cx="24" cy="112" rx="2.6" ry="3.4" fill="#2f7d5b"/>
+  <ellipse cx="36" cy="112" rx="2.6" ry="3.4" fill="#2f7d5b"/>
+  <path d="M30 118 l-2.5 2.5 h5 Z" fill="#c77"/>
+  <path d="M30 120.5 Q30 125 26 126 M30 120.5 Q30 125 34 126" stroke="#a8845a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+</svg>

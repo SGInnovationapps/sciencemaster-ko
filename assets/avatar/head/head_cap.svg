@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 研究キャップ -->
+  <path d="M38 40 Q70 6 102 40 Q103 46 96 46 L44 46 Q37 46 38 40 Z" fill="#185FA5"/>
+  <path d="M38 44 Q70 36 102 44 L104 52 Q70 46 36 52 Z" fill="#11487f"/>
+  <path d="M36 46 Q26 50 24 58 Q38 54 44 52 Z" fill="#11487f"/>
+  <circle cx="70" cy="18" r="4" fill="#9fc3e6"/>
+  <rect x="64" y="38" width="12" height="6" rx="1.5" fill="#fff"/>
+</svg>

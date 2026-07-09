@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- フィールド調査 -->
+  <rect x="0" y="0" width="140" height="140" fill="#dff0e6"/>
+  <circle cx="108" cy="34" r="14" fill="#ffe9a8"/>
+  <path d="M0 110 L40 56 L74 110 Z" fill="#9cc6a6"/>
+  <path d="M52 110 L92 48 L132 110 Z" fill="#7fb58c"/>
+  <path d="M84 84 L92 48 L100 84 Z" fill="#f2f7f0"/>
+  <rect x="0" y="108" width="140" height="32" fill="#bfe0c6"/>
+</svg>

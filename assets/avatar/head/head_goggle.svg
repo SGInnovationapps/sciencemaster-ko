@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- ゴーグル（額に乗せる） -->
+  <path d="M30 40 Q70 30 110 40 L110 47 Q70 38 30 47 Z" fill="#1D9E75"/>
+  <g stroke="#15784f" stroke-width="2.5" fill="none">
+    <circle cx="52" cy="42" r="11" fill="#bfe8da"/>
+    <circle cx="88" cy="42" r="11" fill="#bfe8da"/>
+  </g>
+  <path d="M63 42 H77" stroke="#15784f" stroke-width="3"/>
+  <path d="M30 42 Q24 44 22 50 M110 42 Q116 44 118 50" stroke="#15784f" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="48" cy="38" rx="3.5" ry="2.4" fill="#fff" opacity=".8"/>
+  <ellipse cx="84" cy="38" rx="3.5" ry="2.4" fill="#fff" opacity=".8"/>
+</svg>

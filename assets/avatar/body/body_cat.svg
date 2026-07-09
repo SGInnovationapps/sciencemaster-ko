@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- ねこ（笑顔・横長・やわらか三角耳） -->
+  <path d="M34 46 Q34 22 44 20 Q60 26 62 42 Q48 42 34 46 Z" fill="#8f969c"/>
+  <path d="M106 46 Q106 22 96 20 Q80 26 78 42 Q92 42 106 46 Z" fill="#8f969c"/>
+  <path d="M40 42 Q41 28 47 27 Q56 31 57 40 Q48 40 40 42 Z" fill="#f1b6c0"/>
+  <path d="M100 42 Q99 28 93 27 Q84 31 83 40 Q92 40 100 42 Z" fill="#f1b6c0"/>
+  <ellipse cx="70" cy="76" rx="50" ry="40" fill="#9aa1a7"/>
+  <ellipse cx="70" cy="90" rx="30" ry="22" fill="#f3f3f3"/>
+  <ellipse cx="55" cy="62" rx="5.5" ry="6.5" fill="#2f7d5b"/>
+  <ellipse cx="85" cy="62" rx="5.5" ry="6.5" fill="#2f7d5b"/>
+  <circle cx="53.5" cy="60" r="1.7" fill="#fff"/><circle cx="83.5" cy="60" r="1.7" fill="#fff"/>
+  <ellipse cx="42" cy="77" rx="6.5" ry="3.6" fill="#f1a6b4" opacity="0.6"/><ellipse cx="98" cy="77" rx="6.5" ry="3.6" fill="#f1a6b4" opacity="0.6"/>
+  <path d="M70 86 l-4 4 h8 Z" fill="#e58aa0"/>
+  <path d="M70 90 Q64 98 58 94 M70 90 Q76 98 82 94" stroke="#6f767c" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <g stroke="#cfd4d8" stroke-width="1.4" stroke-linecap="round">
+    <path d="M56 92 L36 88 M56 96 L36 98 M84 92 L104 88 M84 96 L104 98"/>
+  </g>
+</svg>

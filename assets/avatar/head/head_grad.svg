@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 博士帽 -->
+  <path d="M70 16 L112 32 L70 48 L28 32 Z" fill="#222"/>
+  <path d="M44 40 L44 52 Q70 62 96 52 L96 40 L70 49 Z" fill="#333"/>
+  <circle cx="70" cy="32" r="3" fill="#BA7517"/>
+  <path d="M70 32 L98 30 L100 50" stroke="#BA7517" stroke-width="2" fill="none"/>
+  <circle cx="100" cy="52" r="4" fill="#BA7517"/>
+</svg>

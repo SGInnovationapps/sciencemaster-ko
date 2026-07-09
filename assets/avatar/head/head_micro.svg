@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 顕微鏡ヘッド -->
+  <ellipse cx="70" cy="46" rx="22" ry="4" fill="#444"/>
+  <rect x="60" y="40" width="20" height="7" rx="2" fill="#666"/>
+  <path d="M68 40 Q60 30 60 20 L66 20 Q66 30 73 38 Z" fill="#185FA5"/>
+  <rect x="56" y="14" width="11" height="9" rx="2.5" fill="#11487f"/>
+  <circle cx="61" cy="13" r="4.5" fill="#9fc3e6"/>
+  <rect x="74" y="22" width="6" height="20" rx="2" fill="#888"/>
+  <circle cx="77" cy="20" r="4" fill="#cfe6f5"/>
+  <rect x="72" y="40" width="10" height="6" rx="1.5" fill="#aaa"/>
+</svg>
