@@ -3,7 +3,7 @@
    - アイコン等の静的アセットは cache-first
    - 更新時は VERSION を上げる。新SWは即時有効化し、ページ側で自動リロードする。 */
 
-const VERSION = "rikakiso-v13";          // ★更新のたびに上げる
+const VERSION = "rikakiso-v14";          // ★更新のたびに上げる
 const APP_CACHE = `${VERSION}-app`;
 const DATA_CACHE = `${VERSION}-data`;
 
@@ -21,7 +21,8 @@ const APP_SHELL = [
 
 // アバター・装備のSVG（idと一致。背景フォルダは bg）
 const AVATAR_ASSETS = [
-  "body/body_face","body/body_cat","body/body_rabbit","body/body_panda","body/body_fox",
+  "body/body_face","body/body_cat","body/body_rabbit","body/body_koala","body/body_owl",
+  "body/body_panda","body/body_bear","body/body_fox","body/body_tiger","body/body_lion",
   "head/head_goggle","head/head_micro","head/head_cap","head/head_grad","head/head_bulb","head/head_crown",
   "hand/hand_flask","hand/hand_tube","hand/hand_magnet","hand/hand_dna","hand/hand_scope","hand/hand_book",
   "pet/pet_ecoli","pet/pet_mouse","pet/pet_frog","pet/pet_cat","pet/pet_water",
