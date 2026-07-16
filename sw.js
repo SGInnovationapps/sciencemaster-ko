@@ -21,8 +21,7 @@ const APP_SHELL = [
 
 // アバター・装備のSVG（idと一致。背景フォルダは bg）
 const AVATAR_ASSETS = [
-  "body/body_face","body/body_cat","body/body_rabbit","body/body_koala","body/body_owl",
-  "body/body_panda","body/body_bear","body/body_fox","body/body_tiger","body/body_lion",
+  "body/body_face","body/body_cat","body/body_rabbit","body/body_panda","body/body_fox",
   "head/head_goggle","head/head_micro","head/head_cap","head/head_grad","head/head_bulb","head/head_crown",
   "hand/hand_flask","hand/hand_tube","hand/hand_magnet","hand/hand_dna","hand/hand_scope","hand/hand_book",
   "pet/pet_ecoli","pet/pet_mouse","pet/pet_frog","pet/pet_cat","pet/pet_water",
