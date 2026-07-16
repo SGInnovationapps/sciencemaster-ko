@@ -8,7 +8,7 @@
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1D9E75">
-<meta name="description" content="高校「化学基礎」「生物基礎」の四択クイズで毎日コツコツ学習。">
+<meta name="description" content="高校理科基礎の四択クイズで毎日コツコツ学習。">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -190,6 +190,28 @@
   .qmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
   .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;background:var(--green-l);color:var(--green-d);}
   .timer{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--muted);}
+  /* 難易度バッジ（基礎/標準/発展） */
+  .diffbadge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;
+    padding:3px 9px;border-radius:10px;white-space:nowrap;}
+  .diffbadge .st{letter-spacing:-1px;font-size:10px;}
+  .diff1{background:var(--green-l);color:var(--green-d);}
+  .diff2{background:var(--amber-l);color:var(--amber-d);}
+  .diff3{background:var(--red-l);color:var(--red-d);}
+  .qmeta .rightmeta{display:inline-flex;align-items:center;gap:8px;}
+
+  /* 到達度サマリー（受験生向け：科目ごとの仕上がり） */
+  .readiness{padding:14px 16px;margin-bottom:12px;}
+  .readiness .rhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+  .readiness .rttl{font-size:13px;font-weight:600;color:var(--subj-d);display:flex;align-items:center;gap:6px;}
+  .readiness .rttl i{font-size:16px;}
+  .readiness .rpct{font-size:22px;font-weight:700;color:var(--subj-dd);line-height:1;}
+  .readiness .rpct small{font-size:12px;font-weight:600;color:var(--muted);}
+  .rbar{height:9px;background:var(--line);border-radius:5px;overflow:hidden;}
+  .rbar i{display:block;height:100%;border-radius:5px;background:var(--subj);animation:barfill .6s ease;}
+  .rmeta{display:flex;gap:14px;margin-top:9px;}
+  .rmeta div{font-size:11px;color:var(--muted);}
+  .rmeta b{font-size:14px;font-weight:600;color:var(--ink);display:block;line-height:1.3;}
+  .rmeta b.warn{color:var(--red-d);}
   .qtext{background:var(--surface);border:.5px solid var(--line);border-radius:var(--radius);
     padding:18px 16px;margin-bottom:16px;font-size:16px;line-height:1.6;box-shadow:var(--shadow);}
   .choices{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
@@ -328,8 +350,8 @@
       <div class="ic" style="color:var(--blue-dd)"><i class="ti ti-flask"></i></div>
     </div>
     <p class="title-xl">理科基礎マスターへようこそ</p>
-    <p class="lead">毎日コツコツ、化学基礎と生物基礎をマスターしよう。<br>まずはニックネームを教えてください。</p>
-    <input id="nameInput" type="text" maxlength="12" placeholder="ニックネーム（例：はると）"
+    <p class="lead">共通テストの理科基礎を、毎日の積み重ねで得点源に。<br>まずはニックネームを教えてください。</p>
+    <input id="nameInput" type="text" maxlength="12" placeholder="ニックネーム（例：かんくら）"
       style="width:100%;box-sizing:border-box;border:1px solid var(--line2);border-radius:var(--radius);
       padding:14px 16px;font-size:16px;font-family:inherit;margin-bottom:8px;text-align:center;"
       autocomplete="off">
@@ -392,15 +414,27 @@
       <button class="subjtab bio" data-subj="生物基礎" onclick="setSubject('生物基礎')"><i class="ti ti-dna"></i>生物基礎</button>
     </div>
 
-    <p class="section-h">今日のミッション</p>
+    <p class="section-h">今日の学習</p>
+    <div class="card readiness" id="readinessCard">
+      <div class="rhead">
+        <span class="rttl"><i class="ti ti-target-arrow"></i>仕上がり度（<span id="rdSubj">化学基礎</span>）</span>
+        <span class="rpct"><span id="rdPct">0</span><small>%</small></span>
+      </div>
+      <div class="rbar"><i id="rdBar" style="width:0%"></i></div>
+      <div class="rmeta">
+        <div>要復習<b id="rdWeak" class="warn">0問</b></div>
+        <div>未着手の単元<b id="rdUntouched">0</b></div>
+        <div>今日の解答<b id="rdToday">0問</b></div>
+      </div>
+    </div>
     <button class="mode quest" onclick="openQuestCategories()">
       <i class="ti ti-map-2 ic"></i>
-      <div><p class="ttl">単元クエスト</p><p class="dsc">単元を選んでじっくり攻略</p></div>
+      <div><p class="ttl">単元別演習</p><p class="dsc" id="questDsc">弱点の単元から集中攻略</p></div>
       <i class="ti ti-chevron-right chev"></i>
     </button>
     <button class="mode rand" onclick="startQuiz('random')">
       <i class="ti ti-dice ic"></i>
-      <div><p class="ttl">ランダム10</p><p class="dsc">サクッと10問腕だめし</p></div>
+      <div><p class="ttl">ランダム10</p><p class="dsc">全範囲から10問</p></div>
       <i class="ti ti-chevron-right chev"></i>
     </button>
     <button class="mode review" onclick="startQuiz('review')">
@@ -409,7 +443,7 @@
       <span class="badge" id="reviewBadge">3</span>
     </button>
 
-    <p class="section-h">単元の習得度</p>
+    <p class="section-h">単元別の到達度（弱い順）</p>
     <div class="card mastery" id="masteryList"></div>
 
     <p class="section-h">そだてる</p>
@@ -495,7 +529,10 @@
     </div>
     <div class="qmeta">
       <span class="chip" id="qChip">化学基礎・物質の構成</span>
-      <span class="timer"><i class="ti ti-clock"></i><span id="qTimer">00:00</span></span>
+      <span class="rightmeta">
+        <span class="diffbadge diff1" id="qDiff"><span class="st">★</span>基礎</span>
+        <span class="timer"><i class="ti ti-clock"></i><span id="qTimer">00:00</span></span>
+      </span>
     </div>
     <div class="qtext" id="qText"></div>
     <div class="choices" id="qChoices"></div>
@@ -673,8 +710,13 @@ const ITEMS = [
   {slot:"body", id:"body_face",   emoji:"🐶", name:"いぬ",       price:0,    unlock:null,            rarity:"N"},
   {slot:"body", id:"body_cat",    emoji:"🐱", name:"ねこ",       price:150,  unlock:null,            rarity:"N"},
   {slot:"body", id:"body_rabbit", emoji:"🐰", name:"うさぎ",     price:200,  unlock:null,            rarity:"N"},
+  {slot:"body", id:"body_koala",  emoji:"🐨", name:"コアラ",     price:300,  unlock:{answered:30},   rarity:"N"},
+  {slot:"body", id:"body_owl",    emoji:"🦉", name:"ふくろう",   price:350,  unlock:{level:3},       rarity:"R"},
   {slot:"body", id:"body_panda",  emoji:"🐼", name:"パンダ",     price:400,  unlock:{level:4},       rarity:"R"},
+  {slot:"body", id:"body_bear",   emoji:"🐻", name:"くま",       price:550,  unlock:{level:5},       rarity:"R"},
   {slot:"body", id:"body_fox",    emoji:"🦊", name:"きつね",     price:700,  unlock:{level:7},       rarity:"R"},
+  {slot:"body", id:"body_tiger",  emoji:"🐯", name:"とら",       price:1000, unlock:{graduated:5},   rarity:"SR"},
+  {slot:"body", id:"body_lion",   emoji:"🦁", name:"ライオン",   price:1300, unlock:{level:9},       rarity:"SR"},
 
   // --- 頭 ---
   {slot:"head", id:"head_goggle",  emoji:"🥽", name:"ゴーグル",       price:120,  unlock:null,            rarity:"N"},
@@ -1005,17 +1047,19 @@ function renderHome(){
   const rv = rvAll.filter(id=>{ const q=DB.find(x=>x.id===id); return q && q.subject===state.subject; }).length;
   const badge = document.getElementById("reviewBadge");
   const dsc = document.getElementById("reviewDsc");
-  if(rv>0){ badge.textContent=rv; badge.style.display=""; dsc.textContent=`苦手な${rv}問が待っています`; }
-  else{ badge.style.display="none"; dsc.textContent="苦手はありません。すばらしい！"; }
+  if(rv>0){ badge.textContent=rv; badge.style.display=""; dsc.textContent=`苦手な${rv}問から優先出題`; }
+  else{ badge.style.display="none"; dsc.textContent="苦手はありません。この調子！"; }
 
-  // mastery（選択中の科目の単元のみ。割合＝単元の全問に対する正解数）
+  // mastery（選択中の科目の単元のみ）— 受験生向けに「弱い単元」を上に表示
   const ml = document.getElementById("masteryList"); ml.innerHTML="";
   const isChem = state.subject==="化学基礎";
   const accent = isChem ? "var(--blue)" : "var(--green)";
   const icon = isChem ? "ti-flask" : "ti-dna";
-  const rows = masteryBySubjectCat().filter(r=>r.subject===state.subject);
+  const rows = masteryBySubjectCat().filter(r=>r.subject===state.subject)
+    .map(r=>({...r, pct: r.total ? Math.round(r.correctQ/r.total*100) : 0}))
+    .sort((a,b)=>a.pct-b.pct);
   rows.forEach(r=>{
-    const pct = r.total ? Math.round(r.correctQ/r.total*100) : 0;
+    const pct = r.pct;
     const fill = pct>=80 ? accent : (isChem?"var(--blue-m)":"var(--green-m)");
     const div = document.createElement("div"); div.className="mrow";
     div.innerHTML =
@@ -1025,6 +1069,31 @@ function renderHome(){
     ml.appendChild(div);
   });
   if(!rows.length) ml.innerHTML = `<p class="sub" style="margin:0">この科目の問題がありません。</p>`;
+
+  // 入試仕上がり度カード（科目全体の正答済み割合・要復習・未着手単元）
+  const totalQ = rows.reduce((s,r)=>s+r.total,0);
+  const doneQ  = rows.reduce((s,r)=>s+r.correctQ,0);
+  const rdPct = totalQ ? Math.round(doneQ/totalQ*100) : 0;
+  const untouched = rows.filter(r=>r.correctQ===0 && !state.logs.some(l=>{
+    const q=DB.find(x=>x.id===l.qid); return q && q.subject===r.subject && q.category===r.category;
+  })).length;
+  const setTxt=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setTxt("rdSubj", state.subject);
+  setTxt("rdPct", rdPct);
+  const rdBar=document.getElementById("rdBar"); if(rdBar) rdBar.style.width=rdPct+"%";
+  const rdWeak=document.getElementById("rdWeak");
+  if(rdWeak){ rdWeak.textContent=rv+"問"; rdWeak.className = rv>0 ? "warn" : ""; }
+  setTxt("rdUntouched", untouched);
+  setTxt("rdToday", todayCount()+"問");
+
+  // 単元別演習の説明：最も弱い単元を提示
+  const qd = document.getElementById("questDsc");
+  if(qd){
+    const weakest = rows.find(r=>r.pct<100);
+    qd.textContent = weakest
+      ? `おすすめ：「${weakest.category}」（到達度${weakest.pct}%）`
+      : "全単元を制覇！仕上げの周回へ";
+  }
 
   syncHomeAvatar();
 }
@@ -1056,6 +1125,14 @@ function subjectChipColors(subject){
   return ["var(--line)","var(--muted)"];
 }
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* 難易度ラベル（受験生が問題レベルを把握できるように） 1:基礎 2:標準 3:発展 */
+function diffInfo(d){
+  const n = Number(d)||1;
+  if(n>=3) return {cls:"diff3", star:"★★★", label:"発展"};
+  if(n===2) return {cls:"diff2", star:"★★",  label:"標準"};
+  return {cls:"diff1", star:"★",   label:"基礎"};
+}
 
 function startQuiz(mode, category, count){
   let pool;
@@ -1199,6 +1276,11 @@ function renderQuestion(){
   chip.textContent = q.subject+"・"+q.category;
   const cc = subjectChipColors(q.subject);
   chip.style.background=cc[0]; chip.style.color=cc[1];
+
+  // 難易度バッジ（★基礎/★★標準/★★★発展）
+  const di = diffInfo(q.difficulty);
+  const dEl = document.getElementById("qDiff");
+  if(dEl){ dEl.className = "diffbadge "+di.cls; dEl.innerHTML = `<span class="st">${di.star}</span>${di.label}`; }
 
   document.getElementById("qText").textContent = q.question;
 
@@ -1346,10 +1428,10 @@ function endSession(){
   document.getElementById("sumPts").textContent = session.points;
   const rate = session.total ? Math.round(session.correct/session.total*100) : 0;
   let msg = `${session.total}問おつかれさま。`;
-  if(rate===100) msg = "全問正解！文句なしの完璧。";
-  else if(rate>=80) msg = `正答率${rate}%。いい調子です。`;
-  else if(rate>=50) msg = `正答率${rate}%。復習で取り返そう。`;
-  else msg = `正答率${rate}%。間違えた問題は復習リストへ。`;
+  if(rate===100) msg = "全問正解！この単元は本番レベル。";
+  else if(rate>=80) msg = `正答率${rate}%。合格ラインは目前、あと一歩。`;
+  else if(rate>=50) msg = `正答率${rate}%。間違えた問題を復習して定着させよう。`;
+  else msg = `正答率${rate}%。復習モードで確実に取り返そう。`;
   document.getElementById("sumLead").textContent = msg;
   show("summary");
 }
