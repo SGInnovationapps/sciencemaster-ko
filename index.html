@@ -783,7 +783,18 @@ const ITEMS = [
   {slot:"pet", id:"pet_mouse",     emoji:"🐭", name:"実験ねずみ",     price:250,  unlock:null,            rarity:"N"},
   {slot:"pet", id:"pet_frog",      emoji:"🐸", name:"カエル先輩",     price:600,  unlock:{answered:80},   rarity:"R"},
   {slot:"pet", id:"pet_cat",       emoji:"🐈", name:"研究室の看板猫", price:500,  unlock:{level:6},       rarity:"R"},
-  {slot:"pet", id:"pet_water",     emoji:"💧", name:"水分子ちゃん",   price:800,  unlock:{graduated:10}, rarity:"SR"}
+   {slot:"pet", id:"pet_water",     emoji:"💧", name:"水分子ちゃん",   price:800,  unlock:{graduated:10}, rarity:"SR"},
+
+  // --- 仲間（生物・化学＋受験モチーフ） ---
+  {slot:"pet", id:"pet_tardigrade",emoji:"🐛", name:"クマムシ",       price:300,  unlock:null,            rarity:"N"},
+  {slot:"pet", id:"pet_maneki",    emoji:"🐱", name:"まねきねこ",     price:320,  unlock:null,            rarity:"N"},
+  {slot:"pet", id:"pet_paramecium",emoji:"🫧", name:"ゾウリムシ",     price:350,  unlock:{answered:30},   rarity:"N"},
+  {slot:"pet", id:"pet_slimeling", emoji:"🟩", name:"こスライム",     price:450,  unlock:{level:4},       rarity:"R"},
+  {slot:"pet", id:"pet_atom",      emoji:"⚛️", name:"原子くん",       price:500,  unlock:{answered:60},   rarity:"R"},
+  {slot:"pet", id:"pet_ghostling", emoji:"👻", name:"こおばけ",       price:550,  unlock:{level:5},       rarity:"R"},
+  {slot:"pet", id:"pet_robot",     emoji:"🔩", name:"こロボ",         price:700,  unlock:{level:7},       rarity:"R"},
+  {slot:"pet", id:"pet_dragonling",emoji:"🐲", name:"こりゅう",       price:1000, unlock:{graduated:8},   rarity:"SR"},
+  {slot:"pet", id:"pet_phoenix",   emoji:"🦅", name:"不死鳥",         price:1200, unlock:{graduated:12},  rarity:"SR"}
 ];
 const itemById = id => ITEMS.find(x=>x.id===id) || null;
 
