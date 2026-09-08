@@ -1,8 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
   <!-- ほしのこ -->
+  <ellipse cx="70" cy="79" rx="49" ry="45" fill="#BA7517" opacity=".22"/>
   <path d="M44 22 L48 32 L58 34 L48 36 L44 46 L40 36 L30 34 L40 32 Z" fill="#FAC775"/>
   <path d="M96 22 L100 32 L110 34 L100 36 L96 46 L92 36 L82 34 L92 32 Z" fill="#FAC775"/>
   <ellipse cx="70" cy="75" rx="47" ry="43" fill="#FAC775"/>
+  <ellipse cx="70" cy="90" rx="28" ry="20" fill="#FFF3D6" opacity=".7"/>
+  <path d="M67 42 L69 47 L74 47 L70 50 L71.5 55 L67 52 L62.5 55 L64 50 L60 47 L65 47 Z" fill="#E24B4A"/>
+  <path d="M50 96 L51.5 100 L55.5 100 L52.5 102.5 L53.5 106.5 L50 104 L46.5 106.5 L47.5 102.5 L44.5 100 L48.5 100 Z" fill="#FFFFFF" opacity=".6"/>
+  <path d="M90 96 L91.5 100 L95.5 100 L92.5 102.5 L93.5 106.5 L90 104 L86.5 106.5 L87.5 102.5 L84.5 100 L88.5 100 Z" fill="#FFFFFF" opacity=".6"/>
   <path d="M55 55 L57 60 L62 60 L58 63 L59.5 68 L55 65 L50.5 68 L52 63 L48 60 L53 60 Z" fill="#23241F"/>
   <path d="M85 55 L87 60 L92 60 L88 63 L89.5 68 L85 65 L80.5 68 L82 63 L78 60 L83 60 Z" fill="#23241F"/>
   <ellipse cx="42" cy="76" rx="6" ry="3.6" fill="#BA7517" opacity=".5"/>

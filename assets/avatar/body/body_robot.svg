@@ -3,9 +3,14 @@
   <line x1="70" y1="32" x2="70" y2="18" stroke="#5B6268" stroke-width="3"/>
   <circle cx="70" cy="15" r="5" fill="#E24B4A"/>
   <rect x="23" y="32" width="94" height="86" rx="24" fill="#8F969C"/>
+  <rect x="23" y="32" width="94" height="30" rx="24" fill="#B7BDC2" opacity=".5"/>
   <rect x="47" y="55" width="14" height="14" rx="2" fill="#7FB0DE"/>
   <rect x="79" y="55" width="14" height="14" rx="2" fill="#7FB0DE"/>
+  <rect x="54" y="74" width="32" height="14" rx="3" fill="#5B6268"/>
+  <circle cx="61" cy="81" r="2.6" fill="#E24B4A"/>
+  <circle cx="70" cy="81" r="2.6" fill="#FAC775"/>
+  <circle cx="79" cy="81" r="2.6" fill="#1D9E75"/>
   <ellipse cx="42" cy="76" rx="6" ry="3.6" fill="#7FB0DE" opacity=".4"/>
   <ellipse cx="98" cy="76" rx="6" ry="3.6" fill="#7FB0DE" opacity=".4"/>
-  <path d="M58 92 Q70 100 82 92" fill="none" stroke="#5B6268" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M58 96 Q70 104 82 96" fill="none" stroke="#5B6268" stroke-width="2.6" stroke-linecap="round"/>
 </svg>

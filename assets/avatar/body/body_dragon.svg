@@ -4,6 +4,10 @@
   <path d="M67 30 L72 18 L77 30 Z" fill="#0F6E56"/>
   <path d="M76 34 L80 22 L86 34 Z" fill="#0F6E56"/>
   <ellipse cx="70" cy="75" rx="47" ry="43" fill="#1D9E75"/>
+  <ellipse cx="70" cy="90" rx="29" ry="21" fill="#FAC775" opacity=".5"/>
+  <path d="M56 96 Q58 92 62 96" fill="none" stroke="#BA7517" stroke-width="1.4" opacity=".5"/>
+  <path d="M66 100 Q68 96 72 100" fill="none" stroke="#BA7517" stroke-width="1.4" opacity=".5"/>
+  <path d="M76 96 Q78 92 82 96" fill="none" stroke="#BA7517" stroke-width="1.4" opacity=".5"/>
   <circle cx="55" cy="61" r="5.5" fill="#23241F"/>
   <circle cx="53.5" cy="59.5" r="1.6" fill="#FFFFFF"/>
   <circle cx="85" cy="61" r="5.5" fill="#23241F"/>

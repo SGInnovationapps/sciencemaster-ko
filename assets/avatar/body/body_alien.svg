@@ -5,6 +5,10 @@
   <line x1="82" y1="36" x2="88" y2="18" stroke="#6E9A54" stroke-width="3"/>
   <circle cx="88" cy="15" r="5" fill="#5DCAA5"/>
   <ellipse cx="70" cy="75" rx="47" ry="43" fill="#A8D08D"/>
+  <ellipse cx="70" cy="92" rx="27" ry="18" fill="#D9EFC4" opacity=".65"/>
+  <circle cx="52" cy="94" r="2" fill="#6E9A54" opacity=".5"/>
+  <circle cx="88" cy="96" r="2.4" fill="#6E9A54" opacity=".5"/>
+  <circle cx="70" cy="100" r="1.6" fill="#6E9A54" opacity=".5"/>
   <ellipse cx="55" cy="62" rx="8" ry="10" fill="#23241F"/>
   <circle cx="52.5" cy="58" r="2" fill="#FFFFFF"/>
   <ellipse cx="85" cy="62" rx="8" ry="10" fill="#23241F"/>
