@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 首席の王冠 -->
+  <path d="M32 48 L32 30 L46 40 L58 20 L70 38 L82 20 L94 40 L108 30 L108 48 Z" fill="#BA7517"/>
+  <rect x="32" y="46" width="76" height="8" fill="#633806"/>
+  <circle cx="70" cy="38" r="4" fill="#E24B4A"/>
+  <circle cx="50" cy="42" r="3" fill="#185FA5"/>
+  <circle cx="90" cy="42" r="3" fill="#185FA5"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- だるま鉢巻 -->
+  <rect x="30" y="50" width="80" height="8" rx="3" fill="#BA7517"/>
+  <circle cx="70" cy="24" r="12" fill="#E24B4A"/>
+  <path d="M58 24 Q70 14 82 24 Q70 20 58 24 Z" fill="#FFFFFF"/>
+  <circle cx="65" cy="24" r="1.8" fill="#23241F"/>
+  <circle cx="75" cy="24" r="1.8" fill="#23241F"/>
+  <path d="M62 30 Q70 34 78 30" fill="none" stroke="#23241F" stroke-width="1.6" stroke-linecap="round"/>
+</svg>

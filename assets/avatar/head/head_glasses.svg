@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 受験メガネ -->
+  <circle cx="55" cy="60" r="13" fill="none" stroke="#23241F" stroke-width="3.2"/>
+  <circle cx="85" cy="60" r="13" fill="none" stroke="#23241F" stroke-width="3.2"/>
+  <line x1="68" y1="60" x2="72" y2="60" stroke="#23241F" stroke-width="3.2"/>
+  <line x1="42" y1="58" x2="30" y2="52" stroke="#23241F" stroke-width="3"/>
+  <line x1="98" y1="58" x2="110" y2="52" stroke="#23241F" stroke-width="3"/>
+</svg>

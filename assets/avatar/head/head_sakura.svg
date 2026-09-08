@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 桜の花かんむり -->
+  <g fill="#ED93B1">
+    <g transform="translate(30,50)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+    <g transform="translate(46,38)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+    <g transform="translate(62,32)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+    <g transform="translate(78,32)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+    <g transform="translate(94,38)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+    <g transform="translate(110,50)"><circle r="3.4" cx="0" cy="-4"/><circle r="3.4" cx="3.8" cy="-1.2"/><circle r="3.4" cx="2.4" cy="3.4"/><circle r="3.4" cx="-2.4" cy="3.4"/><circle r="3.4" cx="-3.8" cy="-1.2"/><circle r="1.4" cx="0" cy="0" fill="#BA7517"/></g>
+  </g>
+</svg>

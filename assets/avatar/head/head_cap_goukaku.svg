@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 合格キャップ -->
+  <path d="M36 42 Q70 8 104 42 L104 50 Q70 34 36 50 Z" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.5"/>
+  <path d="M34 48 Q70 36 106 48 L106 54 Q70 44 34 54 Z" fill="#E24B4A"/>
+  <rect x="58" y="34" width="24" height="10" rx="2" fill="#FFFFFF"/>
+  <text x="70" y="42" font-family="sans-serif" font-size="8" font-weight="bold" fill="#E24B4A" text-anchor="middle">合格</text>
+</svg>

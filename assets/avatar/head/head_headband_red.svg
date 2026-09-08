@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 赤ハチマキ -->
+  <rect x="24" y="45" width="92" height="14" rx="3" fill="#E24B4A"/>
+  <circle cx="70" cy="52" r="7" fill="#FFFFFF"/>
+  <circle cx="70" cy="52" r="4" fill="#E24B4A"/>
+  <path d="M18 50 L10 60 L18 58 Z" fill="#A32D2D"/>
+  <path d="M122 50 L130 60 L122 58 Z" fill="#A32D2D"/>
+</svg>

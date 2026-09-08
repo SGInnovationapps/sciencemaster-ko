@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 勉強フード -->
+  <path d="M26 62 Q20 20 70 14 Q120 20 114 62 Q104 40 70 38 Q36 40 26 62 Z" fill="#8F969C"/>
+  <line x1="60" y1="58" x2="56" y2="80" stroke="#5B6268" stroke-width="3" stroke-linecap="round"/>
+  <line x1="80" y1="58" x2="84" y2="80" stroke="#5B6268" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="56" cy="82" r="2.5" fill="#5B6268"/>
+  <circle cx="84" cy="82" r="2.5" fill="#5B6268"/>
+</svg>
