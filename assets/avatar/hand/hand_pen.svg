@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- ペン -->
+  <line x1="96" y1="130" x2="124" y2="96" stroke="#185FA5" stroke-width="7" stroke-linecap="round"/>
+  <path d="M120 100 L128 92 L131 96 L123 104 Z" fill="#C7CDD2"/>
+  <path d="M94 132 L98 128 L100 132 L96 136 Z" fill="#23241F"/>
+  <line x1="108" y1="116" x2="112" y2="112" stroke="#0F3E6E" stroke-width="2"/>
+</svg>

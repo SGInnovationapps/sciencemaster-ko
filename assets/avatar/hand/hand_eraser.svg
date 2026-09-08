@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 消しゴム -->
+  <rect x="98" y="104" width="30" height="20" rx="3" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.2"/>
+  <path d="M98 104 L104 98 L134 98 L128 104 Z" fill="#F0F0F0"/>
+  <path d="M128 104 L134 98 L134 118 L128 124 Z" fill="#E2E2E2"/>
+  <rect x="105" y="110" width="16" height="8" fill="#185FA5"/>
+</svg>

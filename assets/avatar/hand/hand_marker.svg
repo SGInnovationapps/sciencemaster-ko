@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 蛍光ペン -->
+  <line x1="96" y1="130" x2="120" y2="100" stroke="#FAC775" stroke-width="9" stroke-linecap="butt"/>
+  <path d="M118 103 L128 92 L132 97 L122 108 Z" fill="#BA7517" opacity=".7"/>
+  <path d="M94 132 L100 134 L98 128 Z" fill="#633806"/>
+</svg>

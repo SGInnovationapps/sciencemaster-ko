@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- えんぴつ -->
+  <line x1="96" y1="130" x2="118" y2="102" stroke="#FAC775" stroke-width="8" stroke-linecap="butt"/>
+  <path d="M96 130 L90 134 L94 136 L100 132 Z" fill="#E8C79A"/>
+  <circle cx="91" cy="134" r="1.4" fill="#23241F"/>
+  <rect x="116" y="94" width="10" height="8" fill="#C7CDD2" transform="rotate(-40 121 98)"/>
+  <circle cx="127" cy="93" r="5" fill="#ED93B1"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 合格お守り -->
+  <path d="M96 96 Q112 92 122 100 L124 128 Q112 134 98 130 Z" fill="#993556"/>
+  <path d="M96 96 Q112 92 122 100 L122 106 Q110 100 97 102 Z" fill="#BA7517"/>
+  <line x1="106" y1="90" x2="112" y2="98" stroke="#BA7517" stroke-width="2.4"/>
+  <line x1="118" y1="90" x2="112" y2="98" stroke="#BA7517" stroke-width="2.4"/>
+  <circle cx="112" cy="90" r="3" fill="#FAC775"/>
+  <rect x="106" y="106" width="8" height="18" fill="#FAC775"/>
+</svg>
