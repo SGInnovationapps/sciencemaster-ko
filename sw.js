@@ -3,7 +3,7 @@
    - アイコン等の静的アセットは cache-first
    - 更新時は VERSION を上げる。新SWは即時有効化し、ページ側で自動リロードする。 */
 
-const VERSION = "rikakiso-v14";          // ★更新のたびに上げる
+const VERSION = "rikakiso-v15";          // ★更新のたびに上げる
 const APP_CACHE = `${VERSION}-app`;
 const DATA_CACHE = `${VERSION}-data`;
 
@@ -23,10 +23,17 @@ const APP_SHELL = [
 const AVATAR_ASSETS = [
   "body/body_face","body/body_cat","body/body_rabbit","body/body_koala","body/body_owl",
   "body/body_panda","body/body_bear","body/body_fox","body/body_tiger","body/body_lion",
+  "body/body_slime","body/body_ghost","body/body_star","body/body_robot","body/body_alien",
+  "body/body_devil","body/body_dragon","body/body_angel",
   "head/head_goggle","head/head_micro","head/head_cap","head/head_grad","head/head_bulb","head/head_crown",
+  "head/head_hachimaki","head/head_hachimaki_hisshou","head/head_cap_goukaku","head/head_headband_red",
+  "head/head_glasses","head/head_daruma","head/head_sakura","head/head_hood","head/head_crown_gold",
   "hand/hand_flask","hand/hand_tube","hand/hand_magnet","hand/hand_dna","hand/hand_scope","hand/hand_book",
+  "hand/hand_akahon","hand/hand_pen","hand/hand_pencil","hand/hand_eraser","hand/hand_marker",
+  "hand/hand_notebook","hand/hand_timer","hand/hand_omamori","hand/hand_ema",
   "pet/pet_ecoli","pet/pet_mouse","pet/pet_frog","pet/pet_cat","pet/pet_water",
-  "bg/bg_lab","bg/bg_cell","bg/bg_mountain","bg/bg_night","bg/bg_space"
+  "bg/bg_lab","bg/bg_cell","bg/bg_mountain","bg/bg_night","bg/bg_space",
+  "bg/bg_classroom","bg/bg_library","bg/bg_sakura","bg/bg_shrine","bg/bg_exam","bg/bg_sunrise"
 ].map((p) => `./assets/avatar/${p}.svg`);
 
 self.addEventListener("install", (event) => {
