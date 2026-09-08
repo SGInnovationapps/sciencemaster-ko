@@ -717,6 +717,15 @@ const ITEMS = [
   {slot:"body", id:"body_fox",    emoji:"🦊", name:"きつね",     price:700,  unlock:{level:7},       rarity:"R"},
   {slot:"body", id:"body_tiger",  emoji:"🐯", name:"とら",       price:1000, unlock:{graduated:5},   rarity:"SR"},
   {slot:"body", id:"body_lion",   emoji:"🦁", name:"ライオン",   price:1300, unlock:{level:9},       rarity:"SR"},
+    // --- キャラクターアバター本体（動物以外：モンスター・天使など） ---
+  {slot:"body", id:"body_slime",  emoji:"🟢", name:"スライム",   price:250,  unlock:null,            rarity:"N"},
+  {slot:"body", id:"body_ghost",  emoji:"👻", name:"おばけ",     price:400,  unlock:{answered:40},   rarity:"R"},
+  {slot:"body", id:"body_star",   emoji:"⭐", name:"ほしのこ",   price:450,  unlock:{level:4},       rarity:"R"},
+  {slot:"body", id:"body_robot",  emoji:"🤖", name:"ロボット",   price:600,  unlock:{level:6},       rarity:"R"},
+  {slot:"body", id:"body_alien",  emoji:"👽", name:"エイリアン", price:650,  unlock:{answered:70},   rarity:"R"},
+  {slot:"body", id:"body_devil",  emoji:"😈", name:"こあくま",   price:750,  unlock:{level:7},       rarity:"R"},
+  {slot:"body", id:"body_dragon", emoji:"🐉", name:"ドラゴン",   price:1200, unlock:{level:9},       rarity:"SR"},
+  {slot:"body", id:"body_angel",  emoji:"👼", name:"てんし",     price:1400, unlock:{graduated:8},   rarity:"SR"},
 
   // --- 頭 ---
   {slot:"head", id:"head_goggle",  emoji:"🥽", name:"ゴーグル",       price:120,  unlock:null,            rarity:"N"},
@@ -725,6 +734,16 @@ const ITEMS = [
   {slot:"head", id:"head_grad",    emoji:"🎓", name:"博士帽",         price:400,  unlock:{level:3},       rarity:"R"},
   {slot:"head", id:"head_bulb",    emoji:"💡", name:"ひらめき電球",   price:550,  unlock:{answered:60},   rarity:"R"},
   {slot:"head", id:"head_crown",   emoji:"👑", name:"ノーベル冠",     price:1500, unlock:{level:10},      rarity:"SR"},
+    // --- 頭（大学入試モチーフ） ---
+  {slot:"head", id:"head_hachimaki",         emoji:"🎌", name:"合格ハチマキ",   price:150,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_headband_red",      emoji:"🔴", name:"赤ハチマキ",     price:120,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_glasses",           emoji:"👓", name:"受験メガネ",     price:180,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_cap_goukaku",       emoji:"🧢", name:"合格キャップ",   price:220,  unlock:null,            rarity:"N"},
+  {slot:"head", id:"head_hachimaki_hisshou", emoji:"🎏", name:"必勝ハチマキ",   price:300,  unlock:{answered:30},   rarity:"N"},
+  {slot:"head", id:"head_hood",              emoji:"🧥", name:"勉強フード",     price:380,  unlock:{level:3},       rarity:"R"},
+  {slot:"head", id:"head_daruma",            emoji:"🎎", name:"だるま鉢巻",     price:500,  unlock:{level:5},       rarity:"R"},
+  {slot:"head", id:"head_sakura",            emoji:"🌸", name:"桜の花かんむり", price:650,  unlock:{answered:80},   rarity:"R"},
+  {slot:"head", id:"head_crown_gold",        emoji:"🏆", name:"首席の王冠",     price:1400, unlock:{graduated:10},  rarity:"SR"},
 
   // --- 手 ---
   {slot:"hand", id:"hand_flask",   emoji:"⚗️", name:"フラスコ",       price:100,  unlock:null,            rarity:"N"},
@@ -733,6 +752,16 @@ const ITEMS = [
   {slot:"hand", id:"hand_dna",     emoji:"🧬", name:"DNA模型",        price:300,  unlock:{answered:50},   rarity:"R"},
   {slot:"hand", id:"hand_scope",   emoji:"🔭", name:"望遠鏡",         price:350,  unlock:{level:5},       rarity:"R"},
   {slot:"hand", id:"hand_book",    emoji:"📕", name:"参考書",         price:280,  unlock:{level:4},       rarity:"R"},
+    // --- 手（文房具・受験アイテム） ---
+  {slot:"hand", id:"hand_pencil",  emoji:"✏️", name:"えんぴつ",       price:100,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_eraser",  emoji:"🧽", name:"消しゴム",       price:100,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_pen",     emoji:"🖊️", name:"ペン",           price:120,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_marker",  emoji:"🖍️", name:"蛍光ペン",       price:150,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_notebook",emoji:"📓", name:"ノート",         price:200,  unlock:null,            rarity:"N"},
+  {slot:"hand", id:"hand_akahon",  emoji:"📕", name:"赤本",           price:300,  unlock:{answered:30},   rarity:"R"},
+  {slot:"hand", id:"hand_timer",   emoji:"⏱️", name:"学習タイマー",   price:380,  unlock:{level:4},       rarity:"R"},
+  {slot:"hand", id:"hand_ema",     emoji:"🪧", name:"絵馬",           price:550,  unlock:{level:6},       rarity:"R"},
+  {slot:"hand", id:"hand_omamori", emoji:"🧧", name:"合格お守り",     price:900,  unlock:{graduated:8},   rarity:"SR"},
 
   // --- 背景 ---
   {slot:"background", id:"bg_none", emoji:"",   name:"なし",           price:0,    unlock:null,            rarity:"N", label:"なし"},
@@ -741,6 +770,13 @@ const ITEMS = [
   {slot:"background", id:"bg_mountain",emoji:"⛰️",name:"フィールド調査",price:350, unlock:{answered:40},   rarity:"R", label:"フィールド調査"},
   {slot:"background", id:"bg_night",emoji:"🌃", name:"夜の自習室",     price:400,  unlock:{level:6},       rarity:"R", label:"夜の自習室"},
   {slot:"background", id:"bg_space",emoji:"🌌", name:"分子の宇宙",     price:900,  unlock:{graduated:10}, rarity:"SR", label:"分子の宇宙"},
+    // --- 背景（学校・受験シーン） ---
+  {slot:"background", id:"bg_classroom",emoji:"🏫", name:"教室",         price:300, unlock:null,           rarity:"N", label:"教室"},
+  {slot:"background", id:"bg_library",  emoji:"📚", name:"図書室",       price:400, unlock:{answered:40},  rarity:"R", label:"図書室"},
+  {slot:"background", id:"bg_exam",     emoji:"📝", name:"試験会場",     price:500, unlock:{level:5},      rarity:"R", label:"試験会場"},
+  {slot:"background", id:"bg_shrine",   emoji:"⛩️", name:"合格祈願の神社", price:600, unlock:{level:6},     rarity:"R", label:"合格祈願の神社"},
+  {slot:"background", id:"bg_sakura",   emoji:"🌸", name:"桜並木",       price:850, unlock:{graduated:8},  rarity:"SR", label:"桜並木"},
+  {slot:"background", id:"bg_sunrise",  emoji:"🌅", name:"合格の朝日",   price:1000,unlock:{graduated:12}, rarity:"SR", label:"合格の朝日"},
 
   // --- 仲間（ペット） ---
   {slot:"pet", id:"pet_ecoli",     emoji:"🦠", name:"大腸菌くん",     price:300,  unlock:null,            rarity:"N"},
