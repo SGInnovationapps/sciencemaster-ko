@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 教室 -->
+  <rect x="0" y="0" width="140" height="140" fill="#F4F2EC"/>
+  <rect x="0" y="10" width="46" height="40" fill="#0F6E56"/>
+  <rect x="0" y="10" width="46" height="40" fill="none" stroke="#633806" stroke-width="3"/>
+  <rect x="98" y="8" width="34" height="46" fill="#E6F1FB" stroke="#BA7517" stroke-width="3"/>
+  <line x1="115" y1="8" x2="115" y2="54" stroke="#BA7517" stroke-width="2"/>
+  <line x1="0" y1="100" x2="140" y2="100" stroke="#D9D2C0" stroke-width="2"/>
+  <rect x="4" y="110" width="30" height="8" fill="#E8C79A"/>
+  <rect x="106" y="110" width="30" height="8" fill="#E8C79A"/>
+</svg>

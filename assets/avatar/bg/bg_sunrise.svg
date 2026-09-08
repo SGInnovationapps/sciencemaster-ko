@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 合格の朝日 -->
+  <rect x="0" y="0" width="140" height="140" fill="#E6F1FB"/>
+  <line x1="70" y1="100" x2="70" y2="60" stroke="#FAC775" stroke-width="3" opacity=".5"/>
+  <line x1="30" y1="100" x2="14" y2="72" stroke="#FAC775" stroke-width="3" opacity=".5"/>
+  <line x1="110" y1="100" x2="126" y2="72" stroke="#FAC775" stroke-width="3" opacity=".5"/>
+  <line x1="46" y1="100" x2="30" y2="66" stroke="#FAC775" stroke-width="2.4" opacity=".4"/>
+  <line x1="94" y1="100" x2="110" y2="66" stroke="#FAC775" stroke-width="2.4" opacity=".4"/>
+  <path d="M20 100 A50 50 0 0 1 120 100 Z" fill="#FAC775"/>
+  <rect x="0" y="100" width="140" height="40" fill="#F4F2EC"/>
+</svg>
