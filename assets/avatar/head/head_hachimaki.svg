@@ -1,9 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
   <!-- 合格ハチマキ -->
   <rect x="24" y="45" width="92" height="14" rx="3" fill="#FFFFFF" stroke="#E24B4A" stroke-width="3"/>
+  <line x1="26" y1="48.5" x2="114" y2="48.5" stroke="#BA7517" stroke-width="1"/>
+  <line x1="26" y1="55.5" x2="114" y2="55.5" stroke="#BA7517" stroke-width="1"/>
   <text x="70" y="56" font-family="sans-serif" font-size="12" font-weight="bold" fill="#E24B4A" text-anchor="middle">合格</text>
-  <circle cx="24" cy="52" r="5" fill="#E24B4A"/>
-  <circle cx="116" cy="52" r="5" fill="#E24B4A"/>
+  <circle cx="24" cy="52" r="5" fill="#BA7517"/>
+  <circle cx="116" cy="52" r="5" fill="#BA7517"/>
+  <circle cx="24" cy="52" r="2" fill="#FAC775"/>
+  <circle cx="116" cy="52" r="2" fill="#FAC775"/>
   <path d="M18 50 L10 60 L18 58 Z" fill="#E24B4A"/>
   <path d="M122 50 L130 60 L122 58 Z" fill="#E24B4A"/>
+  <path d="M18 50 L14 55 L18 58 Z" fill="#BA7517" opacity=".7"/>
+  <path d="M122 50 L126 55 L122 58 Z" fill="#BA7517" opacity=".7"/>
 </svg>

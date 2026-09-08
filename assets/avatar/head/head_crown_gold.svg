@@ -1,8 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
   <!-- 首席の王冠 -->
   <path d="M32 48 L32 30 L46 40 L58 20 L70 38 L82 20 L94 40 L108 30 L108 48 Z" fill="#BA7517"/>
+  <path d="M32 48 L32 30 L46 40 L58 20 L70 38 L82 20 L94 40 L108 30 L108 48 Z" fill="none" stroke="#FAC775" stroke-width="1.2" opacity=".7"/>
   <rect x="32" y="46" width="76" height="8" fill="#633806"/>
+  <circle cx="40" cy="50" r="1.6" fill="#FFFFFF"/>
+  <circle cx="52" cy="50" r="1.6" fill="#FFFFFF"/>
+  <circle cx="88" cy="50" r="1.6" fill="#FFFFFF"/>
+  <circle cx="100" cy="50" r="1.6" fill="#FFFFFF"/>
   <circle cx="70" cy="38" r="4" fill="#E24B4A"/>
   <circle cx="50" cy="42" r="3" fill="#185FA5"/>
   <circle cx="90" cy="42" r="3" fill="#185FA5"/>
+  <circle cx="60" cy="46" r="2.4" fill="#1D9E75"/>
+  <circle cx="80" cy="46" r="2.4" fill="#1D9E75"/>
 </svg>

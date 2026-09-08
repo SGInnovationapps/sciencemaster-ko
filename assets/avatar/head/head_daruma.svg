@@ -1,9 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
   <!-- だるま鉢巻 -->
-  <rect x="30" y="50" width="80" height="8" rx="3" fill="#BA7517"/>
-  <circle cx="70" cy="24" r="12" fill="#E24B4A"/>
-  <path d="M58 24 Q70 14 82 24 Q70 20 58 24 Z" fill="#FFFFFF"/>
-  <circle cx="65" cy="24" r="1.8" fill="#23241F"/>
-  <circle cx="75" cy="24" r="1.8" fill="#23241F"/>
-  <path d="M62 30 Q70 34 78 30" fill="none" stroke="#23241F" stroke-width="1.6" stroke-linecap="round"/>
+  <rect x="28" y="40" width="84" height="8" rx="3" fill="#BA7517"/>
+  <rect x="28" y="40" width="84" height="2.5" fill="#FAC775"/>
+  <path d="M22 40 L28 44 L22 48 Z" fill="#BA7517"/>
+  <path d="M118 40 L112 44 L118 48 Z" fill="#BA7517"/>
+  <circle cx="70" cy="26" r="15" fill="#E24B4A"/>
+  <path d="M55 27 Q70 15 85 27 Q70 22 55 27 Z" fill="#FFFFFF"/>
+  <path d="M58 18 Q70 13 82 18" fill="none" stroke="#BA7517" stroke-width="1.8"/>
+  <path d="M60 23 Q63.5 21 67 23" fill="none" stroke="#23241F" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M73 23 Q76.5 21 80 23" fill="none" stroke="#23241F" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="63.5" cy="27" r="2" fill="#23241F"/>
+  <circle cx="76.5" cy="27" r="2" fill="#23241F"/>
+  <path d="M60 34 Q70 39 80 34" fill="none" stroke="#23241F" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="70" cy="19" r="1.8" fill="#FAC775"/>
 </svg>

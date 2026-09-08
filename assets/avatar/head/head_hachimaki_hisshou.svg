@@ -2,8 +2,14 @@
   <!-- 必勝ハチマキ -->
   <rect x="24" y="45" width="92" height="14" rx="3" fill="#FFFFFF" stroke="#E24B4A" stroke-width="3"/>
   <text x="70" y="56" font-family="sans-serif" font-size="12" font-weight="bold" fill="#E24B4A" text-anchor="middle">必勝</text>
-  <circle cx="24" cy="52" r="5" fill="#E24B4A"/>
-  <circle cx="116" cy="52" r="5" fill="#E24B4A"/>
+  <circle cx="24" cy="52" r="5" fill="#A32D2D"/>
+  <circle cx="116" cy="52" r="5" fill="#A32D2D"/>
+  <circle cx="24" cy="52" r="2" fill="#FFFFFF"/>
+  <circle cx="116" cy="52" r="2" fill="#FFFFFF"/>
   <path d="M16 50 L4 64 L16 60 Z" fill="#E24B4A"/>
   <path d="M124 50 L136 64 L124 60 Z" fill="#E24B4A"/>
+  <path d="M16 58 L10 64 L16 60 Z" fill="#FFFFFF"/>
+  <path d="M124 58 L130 64 L124 60 Z" fill="#FFFFFF"/>
+  <circle cx="10" cy="63" r="1.6" fill="#BA7517"/>
+  <circle cx="130" cy="63" r="1.6" fill="#BA7517"/>
 </svg>
