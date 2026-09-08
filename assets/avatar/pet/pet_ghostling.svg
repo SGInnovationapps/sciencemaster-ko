@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- こおばけ -->
+  <ellipse cx="30" cy="132" rx="14" ry="3" fill="#23241F" opacity=".12"/>
+  <path d="M12 118 C12 104 20 96 30 96 C40 96 48 104 48 118 L48 124 Q45 129 42 124 Q39 129 36 124 Q33 129 30 124 Q27 129 24 124 Q21 129 18 124 Q15 129 12 124 Z" fill="#F3F3F3" opacity=".92"/>
+  <ellipse cx="24" cy="110" rx="2.6" ry="3.4" fill="#23241F"/>
+  <ellipse cx="36" cy="110" rx="2.6" ry="3.4" fill="#23241F"/>
+</svg>

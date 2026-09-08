@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- 不死鳥 -->
+  <path d="M22 112 Q10 106 8 116" fill="none" stroke="#E24B4A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20 118 Q8 118 7 128" fill="none" stroke="#FAC775" stroke-width="3" stroke-linecap="round"/>
+  <path d="M22 124 Q12 130 11 135" fill="none" stroke="#E24B4A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M36 110 Q46 94 54 98 Q47 101 45 107 Q50 105 53 108 Q45 111 40 116 Z" fill="#FAC775"/>
+  <path d="M44 100 Q50 98 54 100" fill="none" stroke="#E24B4A" stroke-width="1.6" opacity=".6"/>
+  <ellipse cx="30" cy="118" rx="12" ry="10" fill="#FAC775"/>
+  <path d="M26 105 L28 97 L31 104 Z" fill="#E24B4A"/>
+  <circle cx="27" cy="115" r="1.7" fill="#23241F"/>
+  <path d="M38 116 L44 114 L40 119 Z" fill="#E8A63C"/>
+</svg>

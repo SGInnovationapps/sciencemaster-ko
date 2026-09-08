@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" width="140" height="140">
+  <!-- こスライム -->
+  <path d="M12 126 Q10 104 30 100 Q50 104 48 126 Q42 130 36 126 Q30 131 24 126 Q18 130 12 126 Z" fill="#5DCAA5" opacity=".88"/>
+  <ellipse cx="24" cy="107" rx="5" ry="3" fill="#FFFFFF" opacity=".6"/>
+  <circle cx="25" cy="115" r="2" fill="#23241F"/>
+  <circle cx="35" cy="115" r="2" fill="#23241F"/>
+  <path d="M25 121 Q30 124 35 121" fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
