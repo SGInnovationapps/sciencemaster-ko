@@ -400,6 +400,29 @@
   .molrec li.now{color:var(--blue-d);}
   .molrec li.now .d{color:var(--blue-d);font-weight:600;}
 
+  /* ---------- 〇×パニック ---------- */
+  .mode.ox{background:var(--ink);box-shadow:0 2px 6px rgba(35,36,31,.25);}
+  .mode.ox .oxic{flex-shrink:0;white-space:nowrap;font-size:18px;font-weight:700;line-height:1;color:#fff;letter-spacing:-.06em;}
+  .mode.ox .oxic b{color:var(--red);font-weight:700;}
+  .mode.ox .ttl{color:#fff;} .mode.ox .dsc{color:rgba(255,255,255,.72);}
+  .mode.ox .chev{color:#fff;}
+  .oxpad{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+  .oxbtn{background:var(--surface);border:.5px solid var(--line2);border-radius:var(--radius);
+    height:116px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    transition:transform .08s,background .15s,border-color .15s;}
+  .oxbtn:active{transform:scale(.97);}
+  .oxbtn .g{font-size:60px;font-weight:700;line-height:1;color:var(--ink);}
+  .oxbtn .l{font-size:12px;color:var(--muted);}
+  .oxbtn.correct{background:var(--green-l);border:2px solid var(--green);}
+  .oxbtn.correct .g,.oxbtn.correct .l{color:var(--green-dd);}
+  .oxbtn.wrong{background:var(--red-l);border:2px solid var(--red);}
+  .oxbtn.wrong .g,.oxbtn.wrong .l{color:var(--red-dd);}
+  .oxbtn.dim{opacity:.45;}
+  .oxbtn[disabled]{cursor:default;}
+  .oxbtn:focus-visible{outline:2px solid var(--subj-d);outline-offset:2px;}
+  .oxkeys{font-size:11px;color:var(--hint);text-align:center;margin:-4px 0 10px;}
+  @media (hover:none){.oxkeys{display:none;}}
+
   .hidden{display:none!important;}
 </style>
 </head>
@@ -508,6 +531,11 @@
       <i class="ti ti-calculator ic"></i>
       <div><p class="ttl">モルモルしようぜ</p><p class="dsc" id="molDsc">モル計算360問から10問・数値で答える</p></div>
       <span class="molunit"><span>mol</span><span>L</span><span>g</span></span>
+    </button>
+    <button class="mode ox" id="oxBtn" onclick="startOx()">
+      <span class="oxic" aria-hidden="true">〇<b>×</b></span>
+      <div><p class="ttl">〇×パニック</p><p class="dsc" id="oxDsc">〇か×で即答・ランダム10問</p></div>
+      <i class="ti ti-chevron-right chev"></i>
     </button>
     <button class="mode review" onclick="startQuiz('review')">
       <i class="ti ti-refresh ic"></i>
@@ -1253,6 +1281,13 @@ function renderHome(){
       ? `自己ベスト ${m.best}/10・${fmtTime(m.bestMs)}`
       : "モル計算360問から10問・数値で答える";
   }
+  const oxDsc = document.getElementById("oxDsc");
+  if(oxDsc){
+    const r = oxState(state.subject);
+    oxDsc.textContent = (r.plays && r.bestMs!=null)
+      ? `自己ベスト ${r.best}/10・${fmtTime(r.bestMs)}`
+      : "〇か×で即答・ランダム10問";
+  }
 
   syncHomeAvatar();
 }
@@ -1485,21 +1520,27 @@ function answerMol(q, val, dontKnow){
    - best : 最多正解数。同点なら bestMs（合計時間）が短いほうを自己ベストとする
    - history は新しい順に最大50件 */
 const MOL_HISTORY_MAX = 50;
-function molState(){
-  const m = state.mol || (state.mol = {});
+function normRec(m){
   if(m.plays==null) m.plays = 0;
   if(m.best==null)  m.best = 0;
   if(m.bestMs===undefined) m.bestMs = null;
   if(!Array.isArray(m.history)) m.history = [];
   return m;
 }
+function molState(){ return normRec(state.mol || (state.mol = {})); }
+/* 〇×パニックは科目ごとに記録: state.ox = { "化学基礎": {...}, "生物基礎": {...} } */
+function oxState(subj){
+  const root = state.ox || (state.ox = {});
+  return normRec(root[subj] || (root[subj] = {}));
+}
+function recStore(ses){ return ses.mode==="ox" ? oxState(ses.subject) : molState(); }
 function fmtTime(ms){
   const t = Math.max(0, Math.round(ms/100));           // 0.1秒単位
   const m = Math.floor(t/600), s = Math.floor(t/10)%60, d = t%10;
   return `${m}:${String(s).padStart(2,"0")}.${d}`;
 }
-function recordMolSession(ses){
-  const m = molState();
+function recordTimedSession(ses){
+  const m = recStore(ses);
   const entry = { at: Date.now(), c: ses.correct, n: ses.total, ms: Math.round(ses.ms) };
   const newBest = m.plays>0 && (entry.c > m.best || (entry.c===m.best && m.bestMs!=null && entry.ms < m.bestMs));
   if(m.plays===0 || entry.c > m.best || (entry.c===m.best && (m.bestMs==null || entry.ms < m.bestMs))){
@@ -1512,8 +1553,8 @@ function recordMolSession(ses){
   saveState();
   return { newBest, entry };
 }
-function renderMolSummary(ses){
-  const m = molState();
+function renderTimedSummary(ses){
+  const m = recStore(ses);
   document.getElementById("molTimeTotal").textContent = fmtTime(ses.ms);
   document.getElementById("molTimeAvg").textContent = ses.total ? (ses.ms/ses.total/1000).toFixed(1) : "0.0";
   const fmtAt = (at)=>{ const d=new Date(at);
@@ -1524,6 +1565,112 @@ function renderMolSummary(ses){
   document.getElementById("molRec").innerHTML =
     `<p class="h"><span>最近の記録</span><span>自己ベスト <b>${m.best}/10・${fmtTime(m.bestMs)}</b></span></p><ol>${rows}</ol>`;
 }
+
+/* ===================================================================
+   〇×パニック：ox.json（化学基礎105題・生物基礎157題）から選択中の科目で10題
+   - ox.json 1件: {id, s(科目), n(原本の番号), q(問題文), a(true=○ / false=×), p(ポイント)}
+   - 解答時間は モルモル と同じ仕組みで、科目ごとに state.ox[科目] へ記録
+   - 4択の復習リストには入れない
+   =================================================================== */
+let OX_DB = null, oxLoading = null, oxAnswered = false;
+function normalizeOx(x){
+  return { ...x, subject:x.s, category:"〇×パニック", difficulty:1, question:x.q, explanation:x.p };
+}
+function loadOx(){
+  if(OX_DB) return Promise.resolve(OX_DB);
+  if(oxLoading) return oxLoading;
+  oxLoading = fetch("ox.json", {cache:"no-store"})
+    .then(r=>{ if(!r.ok) throw new Error("ox.json "+r.status); return r.json(); })
+    .then(d=>{ OX_DB = (Array.isArray(d)?d:[]).map(normalizeOx); return OX_DB; })
+    .catch(e=>{ oxLoading=null; throw e; });
+  return oxLoading;
+}
+async function startOx(){
+  let db;
+  try{ db = await loadOx(); }
+  catch(e){ alert("〇×パニックの問題を読み込めませんでした。通信状況を確認してもう一度お試しください。"); return; }
+  const subj = state.subject || "化学基礎";
+  const list = db.filter(x=>x.subject===subj);
+  if(!list.length){ alert(`${subj}の〇×問題がありません。`); return; }
+  const pool = shuffle(list).slice(0,10);
+  session = { mode:"ox", subject:subj, category:"〇×パニック", queue:[...pool], idx:0, correct:0, points:0, total:pool.length, lastClear:null, ms:0 };
+  show("quiz");
+  renderQuestion();
+}
+function renderOxPad(q, wrap){
+  oxAnswered = false;
+  wrap.innerHTML =
+    `<div class="oxpad">`+
+      `<button class="oxbtn" data-v="1" onclick="answerOx(session.queue[session.idx], true)" aria-label="正しい（〇）"><span class="g">〇</span><span class="l">正しい</span></button>`+
+      `<button class="oxbtn" data-v="0" onclick="answerOx(session.queue[session.idx], false)" aria-label="誤り（×）"><span class="g">×</span><span class="l">誤り</span></button>`+
+    `</div>`+
+    `<p class="oxkeys">キーボード：O / ← で〇、X / → で×、Enter で次へ</p>`;
+}
+function answerOx(q, picked, dontKnow){
+  if(oxAnswered || !q) return;
+  oxAnswered = true;
+  clearInterval(timerInt);
+  const ms = Date.now()-qStart;
+  const isCorrect = !dontKnow && picked===q.a;
+
+  document.getElementById("qDunno").classList.add("hidden");
+  document.querySelectorAll("#qChoices .oxbtn").forEach(b=>{
+    b.disabled = true;
+    const v = b.dataset.v==="1";
+    if(v===q.a) b.classList.add("correct");
+    else if(!dontKnow && v===picked) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  const t = todayStr();
+  const firstTry = !state.logs.some(l=>l.qid===q.id);
+  state.logs.push({qid:q.id, correct:isCorrect, ts:t, ms});
+  session.ms += ms;
+  const reward = awardForAnswer(q, isCorrect, firstTry, false);
+
+  const fb = document.getElementById("qFeedback");
+  const ansTxt = q.a ? "〇（正しい）" : "×（誤り）";
+  if(isCorrect){
+    session.correct++; session.points+=PTS_CORRECT;
+    state.pointsToday+=PTS_CORRECT;
+    const bonusTxt = reward.parts.length>1
+      ? ` <span style="opacity:.85;font-size:11px">(${reward.parts.map(p=>p.label).join("+")})</span>` : "";
+    fb.innerHTML =
+      `<div class="feedback ok"><div class="fh"><i class="ti ti-circle-check"></i>`+
+      `<span class="ft">正解！ ${ansTxt}</span><span class="fp"><i class="ti ti-coin" style="font-size:14px;vertical-align:-2px"></i> +${reward.total}</span></div>`+
+      `<p>${q.explanation}</p>`+
+      (bonusTxt?`<p style="margin:6px 0 0;font-size:12px;color:var(--amber-d)">獲得コイン内訳${bonusTxt}</p>`:``)+
+      `</div>`;
+    if(reward.levelUp) setTimeout(()=>toast(`レベルアップ！ Lv.${reward.newLevel} になりました`), 400);
+  } else {
+    fb.innerHTML =
+      `<div class="feedback ng"><div class="fh"><i class="ti ti-bulb"></i>`+
+      `<span class="ft">正解は ${ansTxt}</span></div><p>${q.explanation}</p></div>`;
+  }
+  saveState();
+
+  const nb = document.getElementById("qNext");
+  nb.className = "btn "+(isCorrect?"green":"dark");
+  nb.innerHTML = (session.idx+1>=session.total)
+    ? `結果を見る <i class="ti ti-arrow-right"></i>`
+    : `次の問題へ <i class="ti ti-arrow-right"></i>`;
+  nb.classList.remove("hidden");
+}
+/* 〇×パニックのキーボード操作 */
+document.addEventListener("keydown", (e)=>{
+  if(!session || session.mode!=="ox") return;
+  if(!document.getElementById("quiz").classList.contains("active")) return;
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if(!oxAnswered){
+    const q = session.queue[session.idx];
+    if(k==="o" || k==="arrowleft"){ answerOx(q, true); e.preventDefault(); }
+    else if(k==="x" || k==="arrowright"){ answerOx(q, false); e.preventDefault(); }
+  } else if(k==="enter"){
+    const nb = document.getElementById("qNext");
+    if(nb && !nb.classList.contains("hidden")){ nextQuestion(); e.preventDefault(); }
+  }
+});
 
 /* 物理キーボード対応（モーダル表示中のみ） */
 document.addEventListener("keydown", (e)=>{
@@ -1662,13 +1809,15 @@ function renderQuestion(){
   // 難易度バッジ（★基礎/★★標準/★★★発展）
   const di = diffInfo(q.difficulty);
   const dEl = document.getElementById("qDiff");
-  if(dEl){ dEl.className = "diffbadge "+di.cls; dEl.innerHTML = `<span class="st">${di.star}</span>${di.label}`; }
+  if(dEl){ dEl.className = "diffbadge "+di.cls+(session.mode==="ox"?" hidden":""); dEl.innerHTML = `<span class="st">${di.star}</span>${di.label}`; }
 
   document.getElementById("qText").textContent = q.question;
 
   const wrap = document.getElementById("qChoices"); wrap.innerHTML="";
   if(session.mode==="mol"){
     renderMolSlot(q, wrap);
+  } else if(session.mode==="ox"){
+    renderOxPad(q, wrap);
   } else {
   // choices: 正解=index0、表示時シャッフル
   const correctText = q.choices[0];
@@ -1789,6 +1938,7 @@ function answerDunno(){
   const q = session.queue[session.idx];
   if(!q) return;
   if(session.mode==="mol"){ answerMol(q, null, true); return; }
+  if(session.mode==="ox"){ answerOx(q, null, true); return; }
   answer(q, null, q.choices[0], null, true);
 }
 
@@ -1822,17 +1972,24 @@ function endSession(){
   else if(rate>=80) msg = `正答率${rate}%。合格ラインは目前、あと一歩。`;
   else if(rate>=50) msg = `正答率${rate}%。間違えた問題を復習して定着させよう。`;
   else msg = `正答率${rate}%。復習モードで確実に取り返そう。`;
-  const isMol = session.mode==="mol";
-  document.getElementById("molTimeRow").classList.toggle("hidden", !isMol);
-  document.getElementById("molRec").classList.toggle("hidden", !isMol);
-  if(isMol){
-    const rec = recordMolSession(session);
-    if(rate===100) msg = "全問正解！モル計算はもう武器になっている。";
-    else if(rate>=80) msg = `正答率${rate}%。単位の変換はほぼ完璧、あと一歩。`;
-    else if(rate>=50) msg = `正答率${rate}%。「÷22.4」「×分子量」の向きを確認しよう。`;
-    else msg = `正答率${rate}%。まずは 1mol＝22.4L＝分子量g を合言葉に。`;
+  const isTimed = session.mode==="mol" || session.mode==="ox";
+  document.getElementById("molTimeRow").classList.toggle("hidden", !isTimed);
+  document.getElementById("molRec").classList.toggle("hidden", !isTimed);
+  if(isTimed){
+    const rec = recordTimedSession(session);
+    if(session.mode==="mol"){
+      if(rate===100) msg = "全問正解！モル計算はもう武器になっている。";
+      else if(rate>=80) msg = `正答率${rate}%。単位の変換はほぼ完璧、あと一歩。`;
+      else if(rate>=50) msg = `正答率${rate}%。「÷22.4」「×分子量」の向きを確認しよう。`;
+      else msg = `正答率${rate}%。まずは 1mol＝22.4L＝分子量g を合言葉に。`;
+    } else {
+      if(rate===100) msg = "全問正解！ひっかけにも動じない。";
+      else if(rate>=80) msg = `正答率${rate}%。知識の土台はしっかりしている。`;
+      else if(rate>=50) msg = `正答率${rate}%。×の文は「どこが誤りか」まで言えるようにしよう。`;
+      else msg = `正答率${rate}%。解説のポイントを1つずつ押さえ直そう。`;
+    }
     if(rec.newBest) msg += "（自己ベスト更新！）";
-    renderMolSummary(session);
+    renderTimedSummary(session);
   }
   document.getElementById("sumLead").textContent = msg;
   show("summary");
@@ -1914,6 +2071,7 @@ function editName(){
   const mode = new URLSearchParams(location.search).get("mode");
   if(mode==="random") startQuiz("random");
   else if(mode==="mol") startMol();
+  else if(mode==="ox") startOx();
   else if(mode==="review"){ if(reviewIds().length) startQuiz("review"); }
 })();
 
