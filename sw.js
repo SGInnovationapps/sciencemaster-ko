@@ -1,9 +1,9 @@
 /* 理科基礎マスター Service Worker
-   - HTML(ページ遷移) と questions.json は network-first（常に最新を取りに行く）
+   - HTML(ページ遷移) と questions.json / mol.json は network-first（常に最新を取りに行く）
    - アイコン等の静的アセットは cache-first
    - 更新時は VERSION を上げる。新SWは即時有効化し、ページ側で自動リロードする。 */
 
-const VERSION = "rikakiso-v15";          // ★更新のたびに上げる
+const VERSION = "rikakiso-v17";          // ★更新のたびに上げる
 const APP_CACHE = `${VERSION}-app`;
 const DATA_CACHE = `${VERSION}-data`;
 
@@ -87,8 +87,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // questions.json も network-first
-  if (url.pathname.endsWith("questions.json")) {
+  // questions.json / mol.json（モル計算）も network-first
+  if (url.pathname.endsWith("questions.json") || url.pathname.endsWith("mol.json")) {
     event.respondWith(
       fetch(req)
         .then((res) => {
