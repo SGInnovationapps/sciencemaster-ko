@@ -3,7 +3,7 @@
    - アイコン等の静的アセットは cache-first
    - 更新時は VERSION を上げる。新SWは即時有効化し、ページ側で自動リロードする。 */
 
-const VERSION = "rikakiso-v19";          // ★更新のたびに上げる
+const VERSION = "rikakiso-v20";          // ★更新のたびに上げる
 const APP_CACHE = `${VERSION}-app`;
 const DATA_CACHE = `${VERSION}-data`;
 
@@ -24,14 +24,16 @@ const AVATAR_ASSETS = [
   "body/body_face","body/body_cat","body/body_rabbit","body/body_koala","body/body_owl",
   "body/body_panda","body/body_bear","body/body_fox","body/body_tiger","body/body_lion",
   "body/body_slime","body/body_ghost","body/body_star","body/body_robot","body/body_alien",
-  "body/body_devil","body/body_dragon","body/body_angel",
+  "body/body_devil","body/body_dragon","body/body_angel","body/body_cow","body/body_pig","body/body_sheep","body/body_goat","body/body_horse","body/body_deer",
+  "body/body_elephant","body/body_rhino","body/body_hippo","body/body_camel","body/body_otter","body/body_octopus",
   "head/head_goggle","head/head_micro","head/head_cap","head/head_grad","head/head_bulb","head/head_crown",
   "head/head_hachimaki","head/head_hachimaki_hisshou","head/head_cap_goukaku","head/head_headband_red",
   "head/head_glasses","head/head_daruma","head/head_sakura","head/head_hood","head/head_crown_gold",
   "hand/hand_flask","hand/hand_tube","hand/hand_magnet","hand/hand_dna","hand/hand_scope","hand/hand_book",
   "hand/hand_akahon","hand/hand_pen","hand/hand_pencil","hand/hand_eraser","hand/hand_marker",
   "hand/hand_notebook","hand/hand_timer","hand/hand_omamori","hand/hand_ema",
-  "pet/pet_ecoli","pet/pet_mouse","pet/pet_frog","pet/pet_cat","pet/pet_water",
+  "pet/pet_ecoli","pet/pet_mouse","pet/pet_frog","pet/pet_cat","pet/pet_water","pet/pet_tardigrade","pet/pet_maneki","pet/pet_paramecium","pet/pet_slimeling","pet/pet_atom",
+  "pet/pet_ghostling","pet/pet_robot","pet/pet_dragonling","pet/pet_phoenix",
   "bg/bg_lab","bg/bg_cell","bg/bg_mountain","bg/bg_night","bg/bg_space",
   "bg/bg_classroom","bg/bg_library","bg/bg_sakura","bg/bg_shrine","bg/bg_exam","bg/bg_sunrise"
 ].map((p) => `./assets/avatar/${p}.svg`);
